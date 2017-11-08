@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormValidationMessage, FormLabel, FormInput, Button } from 'react-native-elements';
-import { StyleSheet, Text, View, Platform, Linking } from 'react-native';
+import { StyleSheet, Text, View, Platform, Linking, KeyboardAvoidingView } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import BackgroundImage from '../components/BackgroundImage';
@@ -59,7 +59,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <BackgroundImage>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
           <View style={{ flex: 2, justifyContent: 'flex-end' }}>
             <FormLabel labelStyle={{ backgroundColor: 'transparent' }}>Email or Username</FormLabel>
             <FormInput
@@ -108,7 +108,7 @@ class LoginScreen extends React.Component {
               onPress={this._onSubmit}
             />
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </BackgroundImage>
     );
   }

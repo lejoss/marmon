@@ -19,7 +19,7 @@ export default class ButtonSetupInformation extends React.Component {
     return (
       <View style={styles.container}>
         <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{ fontSize: 20, textAlign: 'center', color: '#868686', fontWeight: 'bold' }}>
+          <Text style={{ fontSize: 14, textAlign: 'center', color: '#868686', fontWeight: 'bold' }}>
             Complete this one-setup where you will use your Dash Button.
           </Text>
           <Text

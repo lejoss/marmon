@@ -24,10 +24,10 @@ export default class IOSConnectButtonSteps extends Component {
     const iconName = Platform.OS === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-forward';
     return (
       <View style={styles.container}>
-        <View style={{ flex: 2, justifyContent: 'center', paddingHorizontal: 8 }}>
+        <View style={{ flex: 2, justifyContent: 'center', paddingHorizontal: 8, paddingTop: 20 }}>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: 14,
               fontWeight: 'bold',
               textAlign: 'center',
               color: '#868686',
@@ -40,11 +40,9 @@ export default class IOSConnectButtonSteps extends Component {
             <Text style={{ color: '#868686' }}>1. Press the home button on your iPhone</Text>
             <Text style={{ color: '#868686' }}>
               2. Open{' '}
-              <Text style={{ fontWeight: 'bold' }}>
-                iPhone
-								<Text style={{ fontWeight: 'bold', color: '#0C6A9B'}} onPress={() => this._openSettings()}>{' '}Settings{' '}</Text> 
+                iPhone{' '}
+								Settings{' '}
 								select Wi-Fi
-              </Text>
             </Text>
             <Text style={{ color: '#868686' }}>
               3. Select Button{' '}
