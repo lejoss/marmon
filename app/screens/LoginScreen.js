@@ -56,7 +56,7 @@ class LoginScreen extends React.Component {
     }
   };
 
-  render() {
+  render() {    
     return (
       <BackgroundImage>
         <KeyboardAvoidingView style={styles.container} behavior="padding">

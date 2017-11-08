@@ -63,9 +63,6 @@ export const requestIntegrations = user => async dispatch => {
 export const requestConfigureButton = () => (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_CONFIGURE_BUTTON });
-		//const url = 'http://192.168.0.1/configure';
-		const body = createFormRequest(getState);
-		//const { data } = await axios.post(url, body);
 
 
 		dispatch(requestConfigureButtonSuccess(data));
@@ -104,12 +101,9 @@ const selectPassword = state => state.setup.networkCredentials.password;
 
 // utils
 
-const createFormRequest = state => {
 	let formData = new FormData();
 	formData.append("wifi_ssid", selectSsid(state));
 	formData.append("wifi_password", selectPassword(state));
-	formData.append("aws_iot_certificate", selectCertificate(select));
-	formData.append("aws_iot_private_key", selectPrivateKey(state));
 	formData.append("endpoint_region", selectRegion(state));
 	formData.append("endpoint_subdomain", selectSubdomain(state));
 

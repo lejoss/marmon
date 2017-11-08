@@ -28,9 +28,9 @@ class ConnectingButtonScreen extends React.Component {
     },
 	};
 	
-	async componentDidMount() {
-    await this.props.requestConfigureButton();
-    await this.props.requesProvisioning();
+	componentDidMount() {
+    this.props.requestConfigureButton();
+    //await this.props.requesProvisioning();
 	}
 
   render() {

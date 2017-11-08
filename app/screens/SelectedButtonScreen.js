@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, Platform, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
 import { List, ListItem, Button } from 'react-native-elements';
-//import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import * as actions from '../actions'
 import Layout from '../constants/Layout';
 
-export default class SelectButtonScreen extends React.Component {
+class SelectButtonScreen extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     tabBarLabel: 'Setup',
     headerTitle: `${navigation.state.params.button.name}`,
@@ -24,15 +25,10 @@ export default class SelectButtonScreen extends React.Component {
     };
   }
 
-  _onSubmit = event => {
-		event.preventDefault();
-		// const resetAction = NavigationActions.reset({
-		// 	index: 0,
-		// 	actions: [
-		// 		NavigationActions.navigate({ routeName: 'saveCredentials'})
-		// 	]
-		// })
-		// this.props.navigation.dispatch(resetAction)
+  async _onSubmit(event, button) {
+    event.preventDefault()    
+    await this.props.setCurrentButton(button[0]);
+    this.props.navigation.navigate('setup');
   };
 
   render() {			
@@ -67,7 +63,7 @@ export default class SelectButtonScreen extends React.Component {
           }}
         >          
           <Button
-            onPress={() => this.props.navigation.navigate('setup')}				  
+            onPress={event => this._onSubmit(event, button)}				  
 						title="NEXT" 
 						buttonStyle={{ backgroundColor: '#0C6A9B' }} 
 						raised 
@@ -77,6 +73,8 @@ export default class SelectButtonScreen extends React.Component {
     );
   }
 }
+
+export default connect(null, actions)(SelectButtonScreen)
 
 const styles = StyleSheet.create({
   container: {

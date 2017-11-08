@@ -4,11 +4,14 @@ const initialState = {
 	buttons: [],
 	error: null,
 	integrations: [],
-	isFetching: false
+	isFetching: false,
+	currentButton: null
 };
 
 export default function button(state = initialState, action) {
 	switch (action.type) {
+	case types.SET_CURRENT_BUTTON_SUCCESS:
+		return { ...state, currentButton: action.payload }	
 	case types.GET_BUTTON_LIST:
 		return { ...state, isFetching: true}	
 	case types.GET_BUTTON_LIST_SUCCESS:
