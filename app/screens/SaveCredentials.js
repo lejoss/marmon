@@ -80,6 +80,7 @@ class SaveCredentials extends React.Component {
             "Please connect to Button ConfigureMe Network, You are currently connected to: ",
             ssid
           );
+          this.setState({ isDisabled: false, error: "" });
         }
       });
     }
