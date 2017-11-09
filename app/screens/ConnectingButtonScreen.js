@@ -29,6 +29,7 @@ class ConnectingButtonScreen extends React.Component {
 	};
 	
 	componentDidMount() {
+    // validate that is connected to button configure me or kick em to previous screen
     this.props.requestConfigureButton();
     //await this.props.requesProvisioning();
 	}
@@ -47,7 +48,12 @@ class ConnectingButtonScreen extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  configureStatus: state.setup
+}
+
 export default connect(null, actions)(ConnectingButtonScreen)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

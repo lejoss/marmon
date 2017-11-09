@@ -20,6 +20,12 @@ export default class IOSConnectButtonSteps extends Component {
     Linking.openURL('app-settings:');
   }
 
+  componentWillMount() {
+    if (Platform.OS === 'android') {
+      this.props.navigation.navigate('saveCredentials')
+    }
+  }
+
   render() {
     const iconName = Platform.OS === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-forward';
     return (

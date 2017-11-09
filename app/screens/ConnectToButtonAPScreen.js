@@ -15,7 +15,7 @@ export default class ConnectToButtonAPScreen extends React.Component {
     },
   };
 
-  render() {
+  render() {    
     return (
       <View style={styles.container}>
         <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
@@ -30,7 +30,13 @@ export default class ConnectToButtonAPScreen extends React.Component {
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Button
-            onPress={() => this.props.navigation.navigate('iosSteps')}
+            onPress={() => {
+              if (Platform.OS === 'android') {
+                this.props.navigation.navigate('saveCredentials')
+              } else {
+                this.props.navigation.navigate('iosSteps')
+              }
+            }}
             title="NEXT"
             buttonStyle={{ backgroundColor: '#0C6A9B' }}
             raised
