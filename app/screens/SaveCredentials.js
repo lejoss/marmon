@@ -16,10 +16,12 @@ import {
   Alert,
   KeyboardAvoidingView
 } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { NetworkInfo } from "react-native-network-info";
 import { connect } from "react-redux";
 import _ from "lodash";
 import * as actions from "../actions";
+import Layout from '../constants/Layout'
 
 class SaveCredentials extends React.Component {
   static navigationOptions = {
@@ -28,8 +30,8 @@ class SaveCredentials extends React.Component {
     headerTintColor: "white",
     headerStyle: {
       backgroundColor: "#0C6A9B",
-      height: Platform.OS === "ios" ? 60 : 56,
-      paddingTop: Platform.OS === "ios" ? 20 : StatusBar.statusBarHeight
+      height: Platform.OS === "ios" ? 60 : 80,
+      paddingTop: 20
     }
   };
 
@@ -77,8 +79,7 @@ class SaveCredentials extends React.Component {
           this.setState({ isDisabled: false, error: "" });
         } else {
           Alert.alert(
-            "Please connect to Button ConfigureMe Network, You are currently connected to: ",
-            ssid
+            "Please connect to Button ConfigureMe Network"
           );
           this.setState({ isDisabled: false, error: "" });
         }
@@ -88,11 +89,12 @@ class SaveCredentials extends React.Component {
 
   render() {
     const { network, password, buttonSSID, isDisabled } = this.state;
+    const isIOS = Platform.OS === "ios" ? true : false;
     return (
       <View style={styles.container}>
-        <KeyboardAvoidingView behavior="padding"  style={{ flex: 1 }}>
+        <KeyboardAwareScrollView>
           <View style={{ flex: 2, justifyContent: "center", paddingTop: 20 }}>
-            <Text
+            <Text 
               style={{
                 paddingHorizontal: 8,
                 color: "#868686",
@@ -159,29 +161,30 @@ class SaveCredentials extends React.Component {
             </Text>
           </View>
           <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            flexDirection: "row",
-            alignItems: "center"
-          }}
-        >
-          <Button
-            buttonStyle={{ backgroundColor: "#0C6A9B" }}
-            raised
-            title="REFRESH"
-            onPress={this._refreshSSID}
-          />
+            style={{
+              paddingTop: 80,
+              flex: 1,
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              buttonStyle={{ backgroundColor: "#0C6A9B" }}
+              raised
+              title="REFRESH"
+              onPress={this._refreshSSID}
+            />
 
-          <Button
-            buttonStyle={{ backgroundColor: "#0C6A9B" }}
-            raised
-            title="CONNECT"
-            disabled={isDisabled}
-            onPress={this._onSubmit}
-          />
-        </View>
-        </KeyboardAvoidingView>       
+            <Button
+              buttonStyle={{ backgroundColor: "#0C6A9B" }}
+              raised
+              title="CONNECT"
+              disabled={isDisabled}
+              onPress={this._onSubmit}
+            />
+          </View>
+        </KeyboardAwareScrollView>
       </View>
     );
   }
@@ -198,7 +201,7 @@ export default connect(mapStateToProps, actions)(SaveCredentials);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1,    
     backgroundColor: "#fff",
     paddingHorizontal: 16
   }

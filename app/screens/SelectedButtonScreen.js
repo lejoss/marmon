@@ -13,8 +13,8 @@ class SelectButtonScreen extends React.Component {
     headerTintColor: 'white',
     headerStyle: {
       backgroundColor: '#0C6A9B',
-      height: Platform.OS === 'ios' ? 60 : 56,
-      paddingTop: Platform.OS === 'ios' ? 20 : StatusBar.statusBarHeight,
+      height: Platform.OS === 'ios' ? 60 : 80,
+      paddingTop: 20,
     },
   });
 

@@ -63,10 +63,13 @@ export const requestIntegrations = user => async dispatch => {
 export const requestConfigureButton = () => (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_CONFIGURE_BUTTON });
+		const { button, setup } = getState();			
+		const url = 'http://192.168.0.1/configure';
+		const dsn = button.currentButton.unique_id;
+		const body = createFormRequest({ button, setup }, dsn);
 
-
-		dispatch(requestConfigureButtonSuccess(data));
-
+		//const { data } = await axios.post(url, body);		
+		//dispatch(requestConfigureButtonSuccess(data));
 	} catch (err) {
 		dispatch(requestConfigureButtonFailure(err));
 	}
@@ -91,21 +94,33 @@ export const requestProvisioning = () => (dispatch, getState) => {
 	}
 }
 
+export const setCurrentButton = button => dispatch => {
+	try {
+		dispatch({ type: types.SET_CURRENT_BUTTON });
+		dispatch({ type: types.SET_CURRENT_BUTTON_SUCCESS, payload: button });
+	} catch (err) {
+		dispatch({ type: types.SET_CURRENT_BUTTON_FAILURE, payload: err });
+	}
+}
+
 // selectors
-const selectRegion = state => state.button.integrations.region;
-const selectSubdomain = state => state.button.integrations.device_gateway_url.split("ssl://")[1].split("\.")[0];
-const selectCertificate = (state, dsn) => state.button.integrations.keys_and_certificate[`${dsn}_cert`].certificate_pem;
-const selectPrivateKey = (state, dsn) => state.button.integrations.keys_and_certificate[`${dsn}_cert`].key_pair.private_key;
-const selectSsid = state => state.setup.networkCredentials.ssid;
+const selectRegion = state => state.button.integrations[0].region;
+const selectSubdomain = state => state.button.integrations[0].device_gateway_url.split("ssl://")[1].split("\.")[0];
+const selectCertificate = (state, dsn) => state.button.integrations[0].keys_and_certificate[`${dsn}_cert`].certificate_pem;
+const selectPrivateKey = (state, dsn) => state.button.integrations[0].keys_and_certificate[`${dsn}_cert`].key_pair.private_key;
+const selectSsid = state => state.setup.networkCredentials.buttonSSID;
 const selectPassword = state => state.setup.networkCredentials.password;
 
 // utils
 
+const createFormRequest = (state, dsn) => {
 	let formData = new FormData();
 	formData.append("wifi_ssid", selectSsid(state));
 	formData.append("wifi_password", selectPassword(state));
+	formData.append("aws_iot_certificate", selectCertificate(state, dsn));
+	formData.append("aws_iot_private_key", selectPrivateKey(state, dsn));
 	formData.append("endpoint_region", selectRegion(state));
 	formData.append("endpoint_subdomain", selectSubdomain(state));
-
+	
 	return formData
 }
