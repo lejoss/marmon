@@ -71,40 +71,44 @@ class SaveCredentials extends React.Component {
       // VALIDATE FORM
       if (network === "" || password === "" || buttonSSID === "") {
         this.setState({ error: "Please complete the form" });
+        return;
       }
 
-      await AsyncStorage.setItem("network", password);
-      await AsyncStorage.setItem("password", password);
-      await AsyncStorage.setItem("buttonSSID", buttonSSID);
-      await this.props.saveNetworkCredentials({
+      this.props.saveNetworkCredentials({
         network,
         password,
         buttonSSID
       });
 
+      await AsyncStorage.setItem("network", password);
+      await AsyncStorage.setItem("password", password);
+      await AsyncStorage.setItem("buttonSSID", buttonSSID);
+      
+
       if (Platform.OS == "android") {
-        // is wifi enabled?
+        // is wifi enabled?        
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
             //const { creds: { buttonSSID } } = this.props;
             const ssid = `Button ConfigureMe - ${buttonSSID}`;
             const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);
-            // am i connected to button's AP?
+            // am i connected to button's AP?            
             if (network === ssid) {
               // alredy connected to button's AP
               this.setState({ error: "" });
               this.props.navigation.navigate("connectingButton");
             } else {
               // disconnect current network
-              wifi.disconnect();
-              // connect to button's AP
+              wifi.disconnect();              
+              // connect to button's AP              
               wifi.findAndConnect(ssid, password, found => {
                 if (found) {
                   this.setState({ error: "" });
                   this.props.navigation.navigate("connectingButton");
-                } else {
+                } else {                  
                   this.setState({ error: "" });
                   Alert.alert("Could not connect to: ", ssid);
+                  return;
                 }
               });
             }
@@ -126,6 +130,7 @@ class SaveCredentials extends React.Component {
               Alert.alert(
                 "Please connect to ButtonConfigure me before continue."
               );
+              return;
             }
           }
         });
@@ -192,18 +197,20 @@ class SaveCredentials extends React.Component {
               autoCorrect={false}
               inputStyle={{ paddingLeft: 5 }}
               ref={input => (this.buttonSSID = input)}
-            />
+            />            
+          </View>
+          <View style={{ flex: 1 }}>
             <Text
-              style={{
-                paddingLeft: 20,
-                paddingTop: 20,
-                color: "tomato",
-                fontWeight: "bold",
-                fontSize: 14
-              }}
-            >
-              {this.state.error && this.state.error}
-            </Text>
+                style={{
+                  paddingLeft: 20,
+                  paddingTop: 20,
+                  color: "tomato",
+                  fontWeight: "bold",
+                  fontSize: 14
+                }}
+              >
+                {this.state.error && this.state.error}
+              </Text>
           </View>
           <View
             style={{ flex: 1, justifyContent: 'center', paddingTop: 40 }}
