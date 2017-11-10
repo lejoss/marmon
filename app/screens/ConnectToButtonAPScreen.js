@@ -20,7 +20,7 @@ export default class ConnectToButtonAPScreen extends React.Component {
       <View style={styles.container}>
         <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: 14, textAlign: 'center', color: '#868686', fontWeight: 'bold' }}>
-            Press and hold your Dash Button for up to 6 seconds, until the light flashes blue, then tap
+            Press and hold your Button for up to 6 seconds, until the light flashes blue, then tap
             <Text style={styles.bold}> Connect</Text>
           </Text>
           <Image

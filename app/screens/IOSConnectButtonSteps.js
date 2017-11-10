@@ -40,7 +40,7 @@ export default class IOSConnectButtonSteps extends Component {
               paddingBottom: 20
             }}
           >
-            Connect to your Dash Buttons's Wi-Fi
+            Connect to your Buttons's Wi-Fi
           </Text>
           <View style={{ paddingHorizontal: 16 }}>
             <Text style={{ color: '#868686' }}>1. Press the home button on your iPhone</Text>

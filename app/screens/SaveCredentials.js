@@ -141,7 +141,7 @@ class SaveCredentials extends React.Component {
                 fontWeight: "bold"
               }}
             >
-              Connect your Dash Button to your Wi-Fi network.
+              Connect your Button to your Wi-Fi network.
             </Text>
             <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
               Name of your Wifi Network
