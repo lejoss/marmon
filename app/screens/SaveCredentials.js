@@ -102,8 +102,9 @@ class SaveCredentials extends React.Component {
         if (ssid) {
           if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
             Alert.alert(`Great! Connected to ${ssid}`)
-            this.setState({ isDisabled: false });
+            this.setState({ isDisabled: false, error: '' });
           } else {
+            this.setState({ isDisabled: false, error: '' });
             Alert.alert('Please connect to ButtonConfigure me before continue.')
           }
         }
