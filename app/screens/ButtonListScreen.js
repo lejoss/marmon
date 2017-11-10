@@ -31,13 +31,23 @@ class ButtonListScreen extends React.Component {
     try {
       await Promise.all([this.props.requestGatewayDataSources(), this.props.requestIntegrations()]);
     } catch (error) {
-      Alert.alert('Could not load buttons, try restarting the App')
+      Alert.alert('Could not load buttons, check wifi services or try restarting the App')
     }    
   }
 
+ async _onSelectButton(event, button) {
+    event.preventDefault();
+    try {      
+      await this.props.setCurrentButton(button);
+      this.props.navigation.navigate('buttonMode');
+    } catch (error) {
+      Alert.alert('could not select the button');
+    }   
+   }
+
   renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => this.props.navigation.navigate('selectedButton', { button: item })}
+      onPress={(event) => this._onSelectButton(event, item)}
     >
       <ListItem
         title={item.name}
@@ -80,8 +90,7 @@ class ButtonListScreen extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    buttons: state.button.buttons,
-    integrations: state.button.integrations,
+    buttons: state.button.buttons,    
     isFetching: state.button.isFetching,
   };
 };

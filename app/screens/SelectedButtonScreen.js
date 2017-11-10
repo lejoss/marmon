@@ -26,7 +26,7 @@ class SelectButtonScreen extends React.Component {
   }
 
   async _onSubmit(event, button) {
-    event.preventDefault()    
+    event.preventDefault();   
     await this.props.setCurrentButton(button[0]);
     this.props.navigation.navigate('setup');
   };

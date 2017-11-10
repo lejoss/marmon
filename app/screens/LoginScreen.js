@@ -49,10 +49,13 @@ class LoginScreen extends React.Component {
   _onSubmit = event => {
     event.preventDefault();
     const { email, password } = this.state;
-    const { login } = this.props;
+    const { login } = this.props;    
 
-    if (email && password) {
-      login(this.state);
+    if (email == '' && password == ''){
+      this.setState({ error: 'please complete the form' })
+    } else {
+      this.setState({ error: '' })
+      login(this.state);      
     }
   };
 

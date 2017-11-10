@@ -95,7 +95,7 @@ export const requestProvisioning = () => (dispatch, getState) => {
 }
 
 export const setCurrentButton = button => dispatch => {
-	try {
+	try {		
 		dispatch({ type: types.SET_CURRENT_BUTTON });
 		dispatch({ type: types.SET_CURRENT_BUTTON_SUCCESS, payload: button });
 	} catch (err) {

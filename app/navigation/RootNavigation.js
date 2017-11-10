@@ -2,8 +2,6 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import LoginScreen from '../screens/LoginScreen';
 import ButtonListScreen from '../screens/ButtonListScreen';
-import SelectedButtonScreen from '../screens/SelectedButtonScreen';
-import ButtonSetupInformation from '../screens/ButtonSetupInformation';
 import SaveCredentials from '../screens/SaveCredentials';
 import ConnectToButtonAPScreen from '../screens/ConnectToButtonAPScreen';
 import IOSConnectButtonSteps from '../screens/IOSConnectButtonSteps';
@@ -21,17 +19,11 @@ const RootStackNavigator = StackNavigator(
     list: {
       screen: ButtonListScreen,
     },
-    selectedButton: {
-      screen: SelectedButtonScreen,
-    },
-    setup: {
-      screen: ButtonSetupInformation,
+    buttonMode: {
+      screen: ConnectToButtonAPScreen,
     },
     saveCredentials: {
       screen: SaveCredentials,
-    },
-    buttonMode: {
-      screen: ConnectToButtonAPScreen,
     },
     iosSteps: {
       screen: IOSConnectButtonSteps,
