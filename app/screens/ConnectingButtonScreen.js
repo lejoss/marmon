@@ -39,7 +39,7 @@ class ConnectingButtonScreen extends React.Component {
       <View style={styles.container}>
         <Text style={{ textAlign: 'center' }}>
           <Text style={styles.bold}>Connecting to{"\n"} </Text>
-          <Text style={styles.bold}>Dash Button...{"\n"} </Text>
+          <Text style={styles.bold}>Button...{"\n"} </Text>
           <Text style={styles.bold}>Do not close the app{"\n"} </Text>
           <Text style={styles.loading}>....</Text>
         </Text>         
