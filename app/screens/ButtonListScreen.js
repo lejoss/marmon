@@ -9,7 +9,8 @@ import {
   Platform,
   TouchableOpacity,
 	ActivityIndicator,
-	StatusBar
+  StatusBar, 
+  Alert
 } from 'react-native';
 import * as actions from '../actions';
 
@@ -27,7 +28,11 @@ class ButtonListScreen extends React.Component {
   };
 
   async componentWillMount() {
-    await Promise.all([this.props.requestGatewayDataSources(), this.props.requestIntegrations()]);
+    try {
+      await Promise.all([this.props.requestGatewayDataSources(), this.props.requestIntegrations()]);
+    } catch (error) {
+      Alert.alert('Could not load buttons, try restarting the App')
+    }    
   }
 
   renderItem = ({ item }) => (

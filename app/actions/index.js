@@ -60,7 +60,7 @@ export const requestIntegrations = user => async dispatch => {
   }
 };
 
-export const requestConfigureButton = () => (dispatch, getState) => {
+export const requestConfigureButton = () => async (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_CONFIGURE_BUTTON });
 		const { button, setup } = getState();			

@@ -23,6 +23,8 @@ import _ from "lodash";
 import * as actions from "../actions";
 import Layout from '../constants/Layout'
 
+var wifi = require('react-native-android-wifi');
+
 class SaveCredentials extends React.Component {
   static navigationOptions = {
     tabBarLabel: "Setup",
@@ -37,6 +39,7 @@ class SaveCredentials extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       network: "",
       password: "",
@@ -46,50 +49,83 @@ class SaveCredentials extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    const getSSID = NetworkInfo.getSSID(network => this.setState({ network }));
-    const buttonSSID = await AsyncStorage.getItem("buttonSSID");
-    const password = await AsyncStorage.getItem("password");
-
-    if (password && buttonSSID) {
-      this.setState({
-        password,
-        buttonSSID
+  async componentDidMount() {     
+    try {
+      NetworkInfo.getSSID(network => {
+        this.setState({ network })
       });
-    }
+
+      const buttonSSID = await AsyncStorage.getItem("buttonSSID");
+      const password = await AsyncStorage.getItem("password");
+
+      if (password && buttonSSID) {
+        this.setState({
+          password,
+          buttonSSID
+        });
+      }
+    } catch (err) {
+
+    } 
+  }
+
+  _connectToButtonAP = () => {
+    const { network, password, buttonSSID } = this.state; 
+
+    if (network === "" || password === "" || buttonSSID === "") {
+      this.setState({ error: "Please complete the form" });
+    } else if (Platform.OS == 'android') {           
+      // is wifi enabled?
+      wifi.isEnabled((isEnabled)=> {
+        if (isEnabled) {
+          const { unique_id  } = this.props.currentButton;
+          //const { creds: { buttonSSID } } = this.props;
+          const ssid = `Button ConfigureMe - ${buttonSSID}`;
+          const password = unique_id.toUpperCase().slice(8, 16);
+
+          wifi.findAndConnect(ssid, password, (found) => {
+            if (found) {
+              this.setState({ isDisabled: false, error: "" });
+              Alert.alert('Connected to: ', ssid)
+            } else {
+              this.setState({ isDisabled: false, error: "" });
+              Alert.alert('Could not connect to: ', ssid)
+            }
+          })
+        } else{
+          Alert.alert("wifi service is disabled");
+        }
+      })
+    } else if (Platform.OS == 'ios') {      
+      // am i connected to nutton configure me?
+      NetworkInfo.getSSID(ssid => {
+        if (ssid) {
+          if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
+            Alert.alert(`Great! Connected to ${ssid}`)
+            this.setState({ isDisabled: false });
+          } else {
+            Alert.alert('Please connect to ButtonConfigure me before continue.')
+          }
+        }
+      });
+    }                  
   }
 
   _onSubmit = async event => {
     event.preventDefault();
-    const { network, password, buttonSSID } = this.state;
-    await AsyncStorage.setItem("password", password);
-    await AsyncStorage.setItem("buttonSSID", buttonSSID);
-    await this.props.saveNetworkCredentials({ network, password, buttonSSID });
-    this.props.navigation.navigate("connectingButton");
-  };
+    try {      
+      const { network, password, buttonSSID } = this.state;
+      await AsyncStorage.setItem("password", password);
+      await AsyncStorage.setItem("buttonSSID", buttonSSID);
+      await this.props.saveNetworkCredentials({ network, password, buttonSSID });
 
-  _refreshSSID = () => {
-    const { network, password, buttonSSID } = this.state;
-    if (network === "" || password === "" || buttonSSID === "") {
-      this.setState({ error: "Please complete the form" });
-    } else {
-      NetworkInfo.getSSID(ssid => {
-        if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
-          Alert.alert("Connected to:", ssid);
-          this.setState({ isDisabled: false, error: "" });
-        } else {
-          Alert.alert(
-            "Please connect to Button ConfigureMe Network"
-          );
-          this.setState({ isDisabled: false, error: "" });
-        }
-      });
-    }
+      this.props.navigation.navigate("connectingButton");
+    } catch (error) {      
+    }    
   };
 
   render() {
     const { network, password, buttonSSID, isDisabled } = this.state;
-    const isIOS = Platform.OS === "ios" ? true : false;
     return (
       <View style={styles.container}>
         <KeyboardAwareScrollView>
@@ -162,27 +198,30 @@ class SaveCredentials extends React.Component {
           </View>
           <View
             style={{
-              paddingTop: 80,
+              paddingTop: 60,
               flex: 1,
               justifyContent: "center",
               flexDirection: "row",
               alignItems: "center",
             }}
           >
-            <Button
-              buttonStyle={{ backgroundColor: "#0C6A9B" }}
-              raised
-              title="REFRESH"
-              onPress={this._refreshSSID}
-            />
-
-            <Button
-              buttonStyle={{ backgroundColor: "#0C6A9B" }}
-              raised
-              title="CONNECT"
-              disabled={isDisabled}
-              onPress={this._onSubmit}
-            />
+            <View style={{ flex: 1 }}>
+              <Button
+                buttonStyle={{ backgroundColor: "#0C6A9B", alignSelf: 'stretch' }}
+                raised
+                title="CONNECT"
+                onPress={this._connectToButtonAP}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Button
+                buttonStyle={{ backgroundColor: "#0C6A9B",  alignSelf: 'stretch' }}
+                raised
+                title="NEXT"
+                disabled={isDisabled}
+                onPress={this._onSubmit}
+              />
+            </View>
           </View>
         </KeyboardAwareScrollView>
       </View>
@@ -193,7 +232,8 @@ class SaveCredentials extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    creds: state.setup.networkCredentials
+    creds: state.setup.networkCredentials,
+    currentButton: state.button.currentButton
   };
 };
 
