@@ -25,6 +25,12 @@ class LoginScreen extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error !== '') {
+      this.setState({ error: nextProps.error })
+    }
+  }
+
   _resetNavigation() {
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -33,14 +39,14 @@ class LoginScreen extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
 
-  _renderFormValidation() {
-    let iconName = Platform.OS ? 'ios-alert' : 'md-alert';
-    return (
-      <View style={styles.rowValidation}>
-        <FormValidationMessage labelStyle={{ backgroundColor: 'transparent' }}>{this.props.error}</FormValidationMessage>
-      </View>
-    );
-  }
+  // _renderFormValidation(error) {
+  //   let iconName = Platform.OS ? 'ios-alert' : 'md-alert';
+  //   return (
+  //     <View style={styles.rowValidation}>
+  //       <FormValidationMessage labelStyle={{ backgroundColor: 'transparent' }}>{error}</FormValidationMessage>
+  //     </View>
+  //   );
+  // }
 
   _onTrobleLogin = () => {
     Linking.openURL('mailto:webmaster@marmonkeystone.com?subject=Trouble logging into portal');
@@ -51,10 +57,9 @@ class LoginScreen extends React.Component {
     const { email, password } = this.state;
     const { login } = this.props;    
 
-    if (email == '' && password == ''){
-      this.setState({ error: 'please complete the form' })
+    if (email == '' || password == ''){
+      this.setState({ error: 'Invalid Username or Password' });
     } else {
-      this.setState({ error: '' })
       login(this.state);      
     }
   };
@@ -89,7 +94,9 @@ class LoginScreen extends React.Component {
               secureTextEntry
               ref={input => (this.passwordInput = input)}
             />
-            {this.props.error && this._renderFormValidation()}
+            <View>
+              <Text style={{ paddingLeft: 20, color: 'red' }}>{this.state.error}</Text>
+            </View>
           </View>
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <Text

@@ -74,40 +74,31 @@ class SaveCredentials extends React.Component {
         return;
       }
 
+      await AsyncStorage.setItem("network", password);
+      await AsyncStorage.setItem("password", password);
+      await AsyncStorage.setItem("buttonSSID", buttonSSID);
+
       this.props.saveNetworkCredentials({
         network,
         password,
         buttonSSID
       });
-
-      await AsyncStorage.setItem("network", password);
-      await AsyncStorage.setItem("password", password);
-      await AsyncStorage.setItem("buttonSSID", buttonSSID);
       
-
       if (Platform.OS == "android") {
-        // is wifi enabled?        
+        this.setState({ error: "" });             
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
-            //const { creds: { buttonSSID } } = this.props;
-            const ssid = `Button ConfigureMe - ${buttonSSID}`;
-            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);
-            // am i connected to button's AP?            
-            if (network === ssid) {
-              // alredy connected to button's AP
-              this.setState({ error: "" });
+            const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
+            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);                    
+            if (network === buttonAPNetwork) {              
               this.props.navigation.navigate("connectingButton");
-            } else {
-              // disconnect current network
+            } else {              
               wifi.disconnect();              
-              // connect to button's AP              
-              wifi.findAndConnect(ssid, password, found => {
+              wifi.findAndConnect(buttonAPNetwork, password, found => {
                 if (found) {
-                  this.setState({ error: "" });
                   this.props.navigation.navigate("connectingButton");
-                } else {                  
-                  this.setState({ error: "" });
-                  Alert.alert("Could not connect to: ", ssid);
+                } else {                                    
+                  Alert.alert("Could not connect to: ", buttonAPNetwork);
                   return;
                 }
               });
@@ -118,20 +109,22 @@ class SaveCredentials extends React.Component {
             );
           }
         });
-      } else if (Platform.OS == "ios") {
-        // am i connected to nutton configure me?
+      } else if (Platform.OS === "ios") {
+        this.setState({ error: "" });        
         NetworkInfo.getSSID(ssid => {
           if (ssid) {
             if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
-              this.props.navigation.navigate("connectingButton");
-              this.setState({ error: "" });
+              this.props.navigation.navigate("connectingButton");              
             } else {
-              this.setState({ error: "" });
               Alert.alert(
                 "Please connect to ButtonConfigure me before continue."
               );
               return;
             }
+          } else {
+            Alert.alert(
+              "wifi service is disabled, connect to wifi and try again"
+            );
           }
         });
       }
