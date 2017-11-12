@@ -85,7 +85,7 @@ class SaveCredentials extends React.Component {
       });
       
       if (Platform.OS == "android") {
-        this.setState({ error: "" });             
+        this.setState({ error: "", isDisabled: true });             
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
@@ -97,31 +97,35 @@ class SaveCredentials extends React.Component {
               wifi.findAndConnect(buttonAPNetwork, password, found => {
                 if (found) {
                   this.props.navigation.navigate("connectingButton");
-                } else {                                    
+                } else {
+                  this.setState({ isDisabled: false });                               
                   Alert.alert("Could not connect to: ", buttonAPNetwork);
                   return;
                 }
               });
             }
           } else {
+            this.setState({ isDisabled: false }); 
             Alert.alert(
               "wifi service is disabled, connect to wifi and try again"
-            );
+            ); 
           }
         });
       } else if (Platform.OS === "ios") {
-        this.setState({ error: "" });        
+        this.setState({ error: "", isDisabled: true });        
         NetworkInfo.getSSID(ssid => {
           if (ssid) {
             if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
               this.props.navigation.navigate("connectingButton");              
             } else {
+              this.setState({ isDisabled: false }); 
               Alert.alert(
                 "Please connect to ButtonConfigure me before continue."
               );
               return;
             }
           } else {
+            this.setState({ isDisabled: false }); 
             Alert.alert(
               "wifi service is disabled, connect to wifi and try again"
             );
@@ -141,7 +145,7 @@ class SaveCredentials extends React.Component {
               style={{
                 paddingHorizontal: 8,
                 color: "#868686",
-                fontSize: 14,
+                fontSize: 18,
                 textAlign: "center",
                 paddingBottom: 20,
                 fontWeight: "bold"
@@ -182,7 +186,7 @@ class SaveCredentials extends React.Component {
             </FormLabel>
             <FormInput
               underlineColorAndroid="#0C6A9B"
-              value={buttonSSID}
+              value={buttonSSID.toUpperCase()}
               onChangeText={buttonSSID => this.setState({ buttonSSID })}
               autoCapitalize="none"
               returnKeyType="go"
@@ -206,7 +210,7 @@ class SaveCredentials extends React.Component {
               </Text>
           </View>
           <View
-            style={{ flex: 1, justifyContent: 'center', paddingTop: 40 }}
+            style={{ flex: 1, justifyContent: 'center' }}
           >
             <Button
               buttonStyle={{ backgroundColor: "#0C6A9B" }}

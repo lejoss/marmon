@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, Header } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/dist/Ionicons';
 import {
   StyleSheet,
   Text,
@@ -16,10 +17,17 @@ import * as actions from '../actions';
 
 class ButtonListScreen extends React.Component {
   static navigationOptions = {
-    tabBarLabel: 'Setup',
-    headerTitle: 'Button Setup',
+    headerTitle: 'Select Button',
     headerLeft: null,
     headerTintColor: 'white',
+    headerRight: (
+      <Icon 
+        name={Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark'} 
+        size={28} 
+        color="#fff"
+        style={{ paddingRight: 20 }}
+      />
+    ),
     headerStyle: {
       backgroundColor: '#0C6A9B',
       height: Platform.OS === 'ios' ? 60 : 80,

@@ -14,8 +14,9 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'marmon_test@whiteprompt.com',
+      password: 'machine2017',
+      isDisabled: false
     };
   }
 
@@ -27,7 +28,7 @@ class LoginScreen extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== '') {
-      this.setState({ error: nextProps.error })
+      this.setState({ error: nextProps.error, isDisabled: false })
     }
   }
 
@@ -60,6 +61,7 @@ class LoginScreen extends React.Component {
     if (email == '' || password == ''){
       this.setState({ error: 'Invalid Username or Password' });
     } else {
+      this.setState({ isDisabled: true });
       login(this.state);      
     }
   };
@@ -116,6 +118,7 @@ class LoginScreen extends React.Component {
               buttonStyle={{ backgroundColor: '#0C6A9B' }}
               raised
               title="LOG IN"
+              disabled={this.state.isDisabled}
               onPress={this._onSubmit}
             />
           </View>

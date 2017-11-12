@@ -19,7 +19,7 @@ export default class ButtonSetupInformation extends React.Component {
     return (
       <View style={styles.container}>
         <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{ fontSize: 14, textAlign: 'center', color: '#868686', fontWeight: 'bold' }}>
+          <Text style={{ fontSize: 16, textAlign: 'center', color: '#868686' }}>
             Complete this one-setup where you will use your Button.
           </Text>
           <Text

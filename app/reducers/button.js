@@ -44,14 +44,14 @@ export default function button(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
-        currentButton: { ...state.currentButton, status: action.payload }
+        status: action.payload 
       };
 
     case types.REQUEST_CONFIGURE_BUTTON_FAILURE:
       return {
         ...state,
         isFetching: false,
-        currentButton: { ...state.currentButton, status: action.payload }
+        status: action.payload 
       };
 
     default:
