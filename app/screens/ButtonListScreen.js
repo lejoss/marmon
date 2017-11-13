@@ -69,7 +69,6 @@ class ButtonListScreen extends React.Component {
   );
 
   render() {
-    console.log(this.props.buttons)
     return (
       <View style={{ flex: 1 }}>
         {this.props.isFetching ? (

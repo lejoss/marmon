@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormValidationMessage, FormLabel, FormInput, Button } from 'react-native-elements';
-import { StyleSheet, Text, View, Platform, Linking, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Platform, Linking, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import BackgroundImage from '../components/BackgroundImage';
@@ -14,14 +14,26 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'marmon_test@whiteprompt.com',
-      password: 'machine2017',
+      email: '',
+      password: '',
       isDisabled: false
     };
   }
 
-  componentWillUpdate(nextProps) {
+  async componentWillMount() {
+    const username = await AsyncStorage.getItem('loginUsername');
+    const password = await AsyncStorage.getItem('loginPassword');
+
+    if (username && password) {
+      this.setState({ email: username, password });
+      this.props.login({ email: username, password });
+    }
+  }
+
+  async componentWillUpdate(nextProps) {
     if (nextProps.isAuthenticated) {
+      await AsyncStorage.setItem('loginUsername', this.state.email);
+      await AsyncStorage.setItem('loginPassword', this.state.password);
       this._resetNavigation();
     }
   }
@@ -70,7 +82,7 @@ class LoginScreen extends React.Component {
     const isIOS = Platform.OS === 'ios' ? true : false;
     return (
       <BackgroundImage>
-        <KeyboardAvoidingView style={styles.container} {...isIOS ? { behavior: 'padding'} : {} }>
+        <KeyboardAvoidingView style={styles.container} >
           <View style={{ flex: 2, justifyContent: 'flex-end' }}>
             <FormLabel labelStyle={{ backgroundColor: 'transparent' }}>Email or Username</FormLabel>
             <FormInput
@@ -97,7 +109,7 @@ class LoginScreen extends React.Component {
               ref={input => (this.passwordInput = input)}
             />
             <View>
-              <Text style={{ paddingLeft: 20, color: 'red' }}>{this.state.error}</Text>
+              <Text style={{ fontSize: 12, paddingLeft: 20, color: 'red', backgroundColor: 'transparent', paddingTop: 20  }}>{this.state.error}</Text>
             </View>
           </View>
           <View style={{ flex: 1, justifyContent: 'center' }}>
