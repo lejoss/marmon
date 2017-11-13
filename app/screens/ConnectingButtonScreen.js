@@ -64,12 +64,15 @@ class ConnectingButtonScreen extends React.Component {
 
             if (request.status === 200) {              
               Alert.alert('success configuring the button', request.responseText);
+              this.props.navigation.navigate('thankYou');
             } else {
-              Alert.alert(`ERROR configuring the button${request.status}`, JSON.stringify(body));
+              Alert.alert(`ERROR configuring the button ${request.status}`, JSON.stringify(request));
+              this.props.navigation.navigate('ConnectionFailure');
             }
           };
           
           request.open('POST', 'http://192.168.0.1/configure', true);
+          request.setRequestHeader('Content-Type', 'application/json')
           request.send(JSON.stringify(body));
 
         }

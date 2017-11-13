@@ -140,18 +140,17 @@ class SaveCredentials extends React.Component {
     return (
 
         <KeyboardAwareScrollView style={styles.container}>
-          <View style={{ flex: 2, justifyContent: "center", paddingTop: 20 }}>
+          <View style={{ flex: 2, justifyContent: "center" }}>
             <Text
               style={{
-                paddingHorizontal: 8,
                 color: "#868686",
-                fontSize: 18,
+                fontSize: 20,
                 textAlign: "center",
-                paddingBottom: 20,
+                paddingVertical: 20,
                 fontWeight: "bold"
               }}
             >
-              Connect your Button to your Wi-Fi network.
+              Connect your Button to your Wi-Fi Network.
             </Text>
             <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
               Name of your Wifi Network
@@ -194,26 +193,24 @@ class SaveCredentials extends React.Component {
               autoCorrect={false}
               inputStyle={{ paddingLeft: 5 }}
               ref={input => (this.buttonSSID = input)}
-            />            
-          </View>
-          <View style={{ flex: 1 }}>
+            />     
             <Text
-                style={{
-                  paddingLeft: 20,
-                  paddingTop: 20,
-                  color: "tomato",
-                  fontWeight: "bold",
-                  fontSize: 14
-                }}
-              >
-                {this.state.error && this.state.error}
-              </Text>
-          </View>
+              style={{
+                paddingLeft: 20,
+                paddingTop: 10,
+                color: "tomato",
+                fontWeight: "bold",
+                fontSize: 14
+              }}
+            >
+              {this.state.error && this.state.error}
+          </Text>       
+          </View>          
           <View
-            style={{ flex: 1, justifyContent: 'center' }}
+            style={{ paddingTop: 35 }}
           >
             <Button
-              buttonStyle={{ backgroundColor: "#0C6A9B" }}
+              buttonStyle={{ backgroundColor: "#0C6A9B", justifyContent: 'center' }}
               raised
               title="NEXT"              
               onPress={this._connectToButtonAP}
@@ -239,6 +236,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    height: Layout.window.height,
+    flexDirection: 'column',
     paddingHorizontal: 16
   }
 });

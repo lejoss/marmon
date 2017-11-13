@@ -6,10 +6,8 @@ import SaveCredentials from '../screens/SaveCredentials';
 import ConnectToButtonAPScreen from '../screens/ConnectToButtonAPScreen';
 import IOSConnectButtonSteps from '../screens/IOSConnectButtonSteps';
 import ConnectingButtonScreen from '../screens/ConnectingButtonScreen';
-// import ThankYouScreen from '../screens/ThankYouScreen';
-// import ConfigureButtonScreen from '../screens/ConfigureButtonScreen';
-// import IOSConnectButtonSteps from '../screens/IOSConnectButtonSteps';
-// import ConnectionFailureScreen from '../screens/ConnectionFailureScreen';
+import ThankYouScreen from '../screens/ThankYouScreen';
+import ConnectionFailureScreen from '../screens/ConnectionFailureScreen';
 
 const RootStackNavigator = StackNavigator(
   {
@@ -31,12 +29,13 @@ const RootStackNavigator = StackNavigator(
     connectingButton: {
       screen: ConnectingButtonScreen,
     },
-    // thankyou: {
-    //   screen: ThankYouScreen,
-    // },
-    // ConnectionFailure: {
-    //   screen: ConnectionFailureScreen,
+    thankyou: {
+      screen: ThankYouScreen,
     },
+    ConnectionFailure: {
+      screen: ConnectionFailureScreen,
+    },
+  },
   {
     navigationOptions: () => ({
       headerMode: 'none',

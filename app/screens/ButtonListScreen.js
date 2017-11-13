@@ -59,9 +59,9 @@ class ButtonListScreen extends React.Component {
     >
       <ListItem
         title={item.name}
-        titleStyle={{ fontSize: 18, color: '#5C5B5C' }}
+        titleStyle={{ fontSize: 20, color: '#5C5B5C' }}
         subtitle={`DSN: ${item.unique_id}`}
-        subtitleStyle={{ fontSize: 12, color: '#868686' }}
+        subtitleStyle={{ fontSize: 14, color: '#868686' }}
         rightIcon={{ style: { display: 'none' } }}
         containerStyle={{ borderBottomWidth: 0 }}
       />
