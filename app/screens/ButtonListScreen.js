@@ -63,12 +63,13 @@ class ButtonListScreen extends React.Component {
         subtitle={`DSN: ${item.unique_id}`}
         subtitleStyle={{ fontSize: 14, color: '#868686' }}
         rightIcon={{ style: { display: 'none' } }}
-        containerStyle={{ borderBottomWidth: 0 }}
+        containerStyle={{ borderBottomWidth: 0, height: 80 }}
       />
     </TouchableOpacity>
   );
 
   render() {
+    console.log(this.props.buttons)
     return (
       <View style={{ flex: 1 }}>
         {this.props.isFetching ? (
