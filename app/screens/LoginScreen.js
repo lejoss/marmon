@@ -51,16 +51,7 @@ class LoginScreen extends React.Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
-
-  // _renderFormValidation(error) {
-  //   let iconName = Platform.OS ? 'ios-alert' : 'md-alert';
-  //   return (
-  //     <View style={styles.rowValidation}>
-  //       <FormValidationMessage labelStyle={{ backgroundColor: 'transparent' }}>{error}</FormValidationMessage>
-  //     </View>
-  //   );
-  // }
-
+  
   _onTrobleLogin = () => {
     Linking.openURL('mailto:webmaster@marmonkeystone.com?subject=Trouble logging into portal');
   };

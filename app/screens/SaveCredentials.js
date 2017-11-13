@@ -200,14 +200,14 @@ class SaveCredentials extends React.Component {
                 paddingTop: 10,
                 color: "tomato",
                 fontWeight: "bold",
-                fontSize: 14
+                fontSize: 12
               }}
             >
               {this.state.error && this.state.error}
           </Text>       
           </View>          
           <View
-            style={{ paddingTop: 35 }}
+            style={{ paddingTop: 40 }}
           >
             <Button
               buttonStyle={{ backgroundColor: "#0C6A9B", justifyContent: 'center' }}
