@@ -57,6 +57,15 @@ class ConnectingButtonScreen extends React.Component {
           const body = createFormRequest({ button: this.props.button, setup: this.props.setup }, dsn);
 
           const request = new XMLHttpRequest();
+          const urlEncodedData = "";
+          const urlEncodedPairs = [];
+          let prop;
+
+          for (prop in body) {
+            urlEncodedPairs.push(encodeURIComponent(prop) + '=' + encodeURIComponent(body[prop]))
+          }
+          urlEncodedData = urlEncodedPairs.join('&').replace(/%20/g, '+')
+        
           request.onreadystatechange = (e) => {
             if (request.readyState !== 4) {
               return;
@@ -71,9 +80,9 @@ class ConnectingButtonScreen extends React.Component {
             }
           };
           
-          request.open('POST', 'http://192.168.0.1/configure', true);
-          request.setRequestHeader('Content-Type', 'application/json')
-          request.send(JSON.stringify(body));
+          request.open('POST', 'http://192.168.0.1/configure');
+          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+          request.send(JSON.stringify(urlEncodedData));
 
         }
       } else {
