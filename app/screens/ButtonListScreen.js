@@ -23,19 +23,17 @@ class ButtonListScreen extends React.Component {
       headerLeft: null,
       headerTintColor: 'white',
       headerRight: (
-        <View style={{ flexDirection: 'row' }}>
-          <Icon
-            onPress={() => {
-              AsyncStorage.removeItem('loginUsername');
-              AsyncStorage.removeItem('loginPassword');
-              navigation.navigate('Login');
-            }}
-            name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'} 
-            size={28} 
-            color="#fff"
-            style={{ paddingRight: 20 }}
-          />
-        </View>
+        <Icon
+          onPress={() => {
+            AsyncStorage.removeItem('loginUsername');
+            AsyncStorage.removeItem('loginPassword');
+            navigation.navigate('Login');
+          }}
+          name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'} 
+          size={28} 
+          color="#fff"
+          style={{ paddingRight: 20 }}
+        />
       ),
       headerStyle: {
         backgroundColor: '#0C6A9B',

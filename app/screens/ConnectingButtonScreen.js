@@ -64,8 +64,6 @@ class ConnectingButtonScreen extends React.Component {
   }
 }
 
-
-
 const mapStateToProps = (state) => {
   return {
     //configureStatus: state.button.status,
