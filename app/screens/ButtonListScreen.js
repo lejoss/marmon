@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
+import { selectFilteredButtons } from '../selectors'
 import {
   StyleSheet,
   Text,
@@ -66,7 +67,7 @@ class ButtonListScreen extends React.Component {
       onPress={(event) => this._onSelectButton(event, item)}
     >
       <ListItem
-        title={item.name}
+        title={item.name.toUpperCase()}
         titleStyle={{ fontSize: 20, color: '#5C5B5C' }}
         subtitle={`DSN: ${item.unique_id}`}
         subtitleStyle={{ fontSize: 14, color: '#868686' }}
@@ -106,7 +107,7 @@ class ButtonListScreen extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    buttons: state.button.buttons,    
+    buttons: selectFilteredButtons(state),    
     isFetching: state.button.isFetching,
   };
 };

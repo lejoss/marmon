@@ -85,7 +85,7 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 
 		const response = await axios.post(url, body, config);		
     console.log('data', JSON.stringify(response, null, 2))
-    dispatch(requestConfigureButtonSuccess(response.data));
+    dispatch(requestConfigureButtonSuccess(response));
 	} catch (err) {
 		dispatch(requestConfigureButtonFailure(err));
 	}
@@ -95,8 +95,8 @@ export const requestProvisioning = (buttonId) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_PROVISIONING });
 		const url = `http://stage.services.machineshop.io/api/v1/platform/gateway_data_sources/${buttonId}/provision_marmon_button`;
-		const { data } = await axios.put(url, {});
-		dispatch(requestConfigureButtonSuccess(data));
+		const response = await axios.put(url, {});
+		dispatch(requestProvisioningSuccess(response));
 	} catch (err) {
 		dispatch(requestProvisioningFailure(err));
 	}

@@ -40,17 +40,24 @@ class ConnectingButtonScreen extends React.Component {
       wifi.findAndConnect(this.props.networkCredentials.network, this.props.networkCredentials.password, found => {
         if (found) {                    
           setTimeout(() => {
-            this.props.requestProvisioning(this.props.button.currentButton._id);
-            this.props.navigation.navigate('thankyou');
+            this.props.requestProvisioning(this.props.button.currentButton._id);            
           }, 9000);
         } else {
           console.log('connecting back error?')
         }
       })
     } catch (err) {
-      console.log(err);
       Alert.alert(`ERROR configuring the button`, JSON.stringify(err, null, 2));
       this.props.navigation.navigate('ConnectionFailure');
+    }
+  }
+
+  componentWillUpdate(nextProps) {
+    const { buttonConfig, buttonProvisioning } = nextProps;
+    if (nextProps && buttonConfig && buttonProvisioning) {
+      if (buttonConfig.status === 200 && buttonProvisioning.status === 200) {
+        this.props.navigation.navigate('thankyou', );
+      }
     }
   }
   
@@ -69,10 +76,11 @@ class ConnectingButtonScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    //configureStatus: state.button.status,
+  return {    
     networkCredentials: state.setup.networkCredentials,
     button: state.button,
+    buttonConfig: state.button.status,
+    buttonProvisioning: state.button.provisioning,
     setup: state.setup
   }
 }

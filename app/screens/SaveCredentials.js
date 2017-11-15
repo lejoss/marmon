@@ -44,7 +44,7 @@ class SaveCredentials extends React.Component {
       network: "",
       password: "",
       buttonSSID: "",
-      isDisabled: true,
+      isDisabled: false,
       error: ""
     };
   }
@@ -85,7 +85,7 @@ class SaveCredentials extends React.Component {
       });
       
       if (Platform.OS == "android") {
-        this.setState({ error: "", isDisabled: true });             
+        this.setState({ error: "" });             
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
@@ -93,10 +93,10 @@ class SaveCredentials extends React.Component {
             
             wifi.findAndConnect(buttonAPNetwork, password, found => {
               if (found) {
+                this.setState({ isDisabled: true }); 
                 setTimeout(() => {
-                  this.setState({ isDisabled: true }); 
                   this.props.navigation.navigate("connectingButton");
-                }, 2000)                  
+                }, 5000);            
               } else {
                 this.setState({ isDisabled: false });                               
                 Alert.alert("Could not connect to: ", buttonAPNetwork);
@@ -210,7 +210,8 @@ class SaveCredentials extends React.Component {
             <Button
               buttonStyle={{ backgroundColor: "#0C6A9B", justifyContent: 'center' }}
               raised
-              title="NEXT"              
+              title="NEXT"
+              disabled={isDisabled}            
               onPress={this._connectToButtonAP}
             />
           </View>

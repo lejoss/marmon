@@ -6,7 +6,8 @@ const initialState = {
   integrations: [],
   isFetching: false,
   currentButton: null,
-  status: null
+  status: null,
+  provisioning: null
 };
 
 export default function button(state = initialState, action) {
@@ -20,9 +21,6 @@ export default function button(state = initialState, action) {
         ...state,
         isFetching: false,
         buttons: action.payload
-        // buttonList: action.payload.map(button => {
-        //   return { model: button.model, name: button.name };
-        //}),
       };
 
     case types.GET_BUTTON_LIST_FAILURE:
@@ -36,6 +34,23 @@ export default function button(state = initialState, action) {
 
     case types.REQUEST_INTEGRATIONS_FAILURE:
       return { ...state, error: action.payload, isFetching: false };
+
+    case types.REQUEST_PROVISIONING:
+      return { ...state, isFetching: true };
+    
+    case types.REQUEST_PROVISIONING_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        provisioning: action.payload 
+      };
+      
+    case types.REQUEST_PROVISIONING_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        provisioning: action.payload 
+      };
 
     case types.REQUEST_CONFIGURE_BUTTON:
       return { ...state, isFetching: true };
