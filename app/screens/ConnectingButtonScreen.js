@@ -15,23 +15,12 @@ import {
 import { NetworkInfo } from "react-native-network-info";
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 var wifi = require("react-native-android-wifi");
 
 import * as actions from '../actions'
-import { selectSsid, selectPassword, selectCertificate, selectPrivateKey, selectRegion, selectSubdomain } from '../selectors'
-
-const createFormRequest = (state, dsn) => {
-	let formData = new FormData();
-	formData.append("wifi_ssid", selectSsid(state));
-	formData.append("wifi_password", selectPassword(state));
-	formData.append("aws_iot_certificate", selectCertificate(state, dsn));
-	formData.append("aws_iot_private_key", selectPrivateKey(state, dsn));
-	formData.append("endpoint_region", selectRegion(state));
-	formData.append("endpoint_subdomain", selectSubdomain(state));
-	
-	return formData
-}
+import { createFormRequest } from '../services/utils'
 
 class ConnectingButtonScreen extends React.Component {
   static navigationOptions = {
@@ -46,62 +35,22 @@ class ConnectingButtonScreen extends React.Component {
 	};
 	
 	async componentDidMount() {
-    const buttonXXX = await AsyncStorage.getItem("buttonSSID");
-    NetworkInfo.getSSID(network => {
-      if (network) {        
-        if (network === `Button ConfigureMe - ${buttonXXX}`) {
-          //this.props.requestConfigureButton();
-          //await this.props.requesProvisioning();
-
-          const dsn = this.props.button.currentButton.unique_id;
-          const body = createFormRequest({ button: this.props.button, setup: this.props.setup }, dsn);
-
-          const request = new XMLHttpRequest();
-          const urlEncodedData = "";
-          const urlEncodedPairs = [];
-          let prop;
-
-          for (prop in body) {
-            urlEncodedPairs.push(encodeURIComponent(prop) + '=' + encodeURIComponent(body[prop]))
-          }
-          urlEncodedData = urlEncodedPairs.join('&').replace(/%20/g, '+')
-        
-          request.onreadystatechange = (e) => {
-            if (request.readyState !== 4) {
-              return;
-            }
-
-            if (request.status === 200) {              
-              Alert.alert('success configuring the button', request.responseText);
-              this.props.navigation.navigate('thankYou');
-            } else {
-              Alert.alert(`ERROR configuring the button ${request.status}`, JSON.stringify(request));
-              this.props.navigation.navigate('ConnectionFailure');
-            }
-          };
-          
-          request.open('POST', 'http://192.168.0.1/configure');
-          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-          request.send(JSON.stringify(urlEncodedData));
-
+    try {
+      await this.props.requestConfigureButton(this.props.button._id);
+      wifi.findAndConnect(this.props.networkCredentials.network, this.props.networkCredentials.password, found => {
+        if (found) {
+          this.props.requestProvisioning(this.props.button._id);
+          this.props.navigation.navigate('thankyou');
         }
-      } else {
-        Alert.alert('ERROR 2 configuring the button');
-      }
-    });
-    // validate that is connected to button configure me or kick em to previous screen
-    
-    
-	}
-
-  // componentWillUpdate(nextProps) {
-  //   if (nextProps.configureStatus) {
-  //     Alert.alert(nextProps.configureStatus);
-  //   }
-  // }
+      })
+    } catch (err) {
+      console.log(err);
+      Alert.alert(`ERROR configuring the button`, JSON.stringify(err, null, 2));
+      this.props.navigation.navigate('ConnectionFailure');
+    }
+  }
   
   render() {
-  
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: 'center' }}>
@@ -115,9 +64,12 @@ class ConnectingButtonScreen extends React.Component {
   }
 }
 
+
+
 const mapStateToProps = (state) => {
   return {
     //configureStatus: state.button.status,
+    networkCredentials: state.setup.networkCredentials,
     button: state.button,
     setup: state.setup
   }

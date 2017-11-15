@@ -11,29 +11,39 @@ import {
   TouchableOpacity,
 	ActivityIndicator,
   StatusBar, 
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 import * as actions from '../actions';
 
 class ButtonListScreen extends React.Component {
-  static navigationOptions = {
-    headerTitle: 'Select Button',
-    headerLeft: null,
-    headerTintColor: 'white',
-    headerRight: (
-      <Icon 
-        name={Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark'} 
-        size={28} 
-        color="#fff"
-        style={{ paddingRight: 20 }}
-      />
-    ),
-    headerStyle: {
-      backgroundColor: '#0C6A9B',
-      height: Platform.OS === 'ios' ? 60 : 80,
-      paddingTop: 20,
-    },
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: 'Select Button',
+      headerLeft: null,
+      headerTintColor: 'white',
+      headerRight: (
+        <View style={{ flexDirection: 'row' }}>
+          <Icon
+            onPress={() => {
+              AsyncStorage.removeItem('loginUsername');
+              AsyncStorage.removeItem('loginPassword');
+              navigation.navigate('Login');
+            }}
+            name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'} 
+            size={28} 
+            color="#fff"
+            style={{ paddingRight: 20 }}
+          />
+        </View>
+      ),
+      headerStyle: {
+        backgroundColor: '#0C6A9B',
+        height: Platform.OS === 'ios' ? 60 : 80,
+        paddingTop: 20,
+      },
+    };
+  }
 
   async componentWillMount() {
     try {
@@ -43,7 +53,7 @@ class ButtonListScreen extends React.Component {
     }    
   }
 
- async _onSelectButton(event, button) {
+  async _onSelectButton(event, button) {
     event.preventDefault();
     try {      
       await this.props.setCurrentButton(button);

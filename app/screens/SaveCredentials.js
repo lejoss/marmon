@@ -89,12 +89,12 @@ class SaveCredentials extends React.Component {
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
-            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);                    
+            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);
+            //console.log(password)                   
             if (network === buttonAPNetwork) {              
               this.props.navigation.navigate("connectingButton");
-            } else {              
-              wifi.disconnect();              
-              wifi.findAndConnect(buttonAPNetwork, password, found => {
+            } else {                     
+              wifi.findAndConnect(buttonAPNetwork, '91874FAA', found => {
                 if (found) {
                   this.props.navigation.navigate("connectingButton");
                 } else {
@@ -176,7 +176,6 @@ class SaveCredentials extends React.Component {
               returnKeyType="next"
               autoCorrect={false}
               inputStyle={{ paddingLeft: 5 }}
-              secureTextEntry
               onSubmitEditing={() => this.buttonSSID.focus()}
               ref={input => (this.passwordInput = input)}
             />

@@ -1,11 +1,15 @@
 import * as types from '../constants/ActionTypes';
 import axios from 'axios';
 import Base64 from './base64';
+import { createFormRequest } from '../services/utils'
 
 // action creators
 
 const loginSuccess = token => ({ type: types.LOGIN_SUCCESS, payload: token });
 const loginFailure = err => ({ type: types.LOGIN_FAILURE, payload: err });
+
+const logoutSuccess = () => ({ type: "LOGOUT_SUCCESS", payload: { isAutenticated: false } });
+const logoutFailure = err => ({ type: "LOGOUT_FAILURE", payload: err });
 
 const getButtonListFailure = err => ({ type: types.GET_BUTTON_LIST_FAILURE, payload: err });
 const getButtonListSuccess = payload => ({ type: types.GET_BUTTON_LIST_SUCCESS, payload });
@@ -32,6 +36,14 @@ export const login = user => async dispatch => {
     dispatch(loginFailure(err));
   }
 };
+
+export const logout = (dispatch) => {
+  try {
+    dispatch(logoutSuccess())
+  } catch (error) {
+    dispatch(logoutFailure(err))
+  }
+}
 
 export const saveNetworkCredentials = credentials => async (dispatch) => {
   dispatch(saveCredentials(credentials));
@@ -64,33 +76,29 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_CONFIGURE_BUTTON });
 		const { button, setup } = getState();			
-		const url = 'http://192.168.0.1/configure';
+    const url = 'http://192.168.0.1/configure';
+    const config = {
+      'Content-Type': 'multipart/form-data; charset=utf-8'
+    }
 		const dsn = button.currentButton.unique_id;
 		const body = createFormRequest({ button, setup }, dsn);
 
-		const { data } = await axios.post(url, body);		
-		dispatch(requestConfigureButtonSuccess(data));
+		const { data } = await axios.post(url, body, config);		
+    console.log('data', JSON.stringify(data, null, 2))
+    dispatch(requestConfigureButtonSuccess(data));
 	} catch (err) {
 		dispatch(requestConfigureButtonFailure(err));
 	}
 }
 
-export const requestProvisioning = () => (dispatch, getState) => {
+export const requestProvisioning = (buttonId) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_PROVISIONING });
-		const url = 'http://stage.services.machineshop.io/api/v1/platform/gateway_data_sources';
-		// const body = {
-		// 	"data_source_type_id": " 59e12d5ff1f1790f271ef222 ",
-		// 	"name": "Warehouse Bench - 532",
-		// 	"unique_id": "3r545",
-		// 	"marmon_button": true
-		// };
-		// const { data } = await axios.post(url, body);
-
-		// dispatch(requestConfigureButtonSuccess(data));
-
-	} catch (error) {
-		dispatch(requestProvisioningFailure(data));
+		const url = ` http://stage.services.machineshop.io/api/v1/platform/gateway_data_sources/${buttonId}/provision_marmon_button`;
+		const { data } = await axios.put(url, {});
+		dispatch(requestConfigureButtonSuccess(data));
+	} catch (err) {
+		dispatch(requestProvisioningFailure(err));
 	}
 }
 
@@ -101,26 +109,4 @@ export const setCurrentButton = button => dispatch => {
 	} catch (err) {
 		dispatch({ type: types.SET_CURRENT_BUTTON_FAILURE, payload: err });
 	}
-}
-
-// selectors
-const selectRegion = state => state.button.integrations[0].region;
-const selectSubdomain = state => state.button.integrations[0].device_gateway_url.split("ssl://")[1].split("\.")[0];
-const selectCertificate = (state, dsn) => state.button.integrations[0].keys_and_certificate[`${dsn}_cert`].certificate_pem;
-const selectPrivateKey = (state, dsn) => state.button.integrations[0].keys_and_certificate[`${dsn}_cert`].key_pair.private_key;
-const selectSsid = state => state.setup.networkCredentials.buttonSSID;
-const selectPassword = state => state.setup.networkCredentials.password;
-
-// utils
-
-const createFormRequest = (state, dsn) => {
-	let formData = new FormData();
-	formData.append("wifi_ssid", selectSsid(state));
-	formData.append("wifi_password", selectPassword(state));
-	formData.append("aws_iot_certificate", selectCertificate(state, dsn));
-	formData.append("aws_iot_private_key", selectPrivateKey(state, dsn));
-	formData.append("endpoint_region", selectRegion(state));
-	formData.append("endpoint_subdomain", selectSubdomain(state));
-	
-	return formData
 }

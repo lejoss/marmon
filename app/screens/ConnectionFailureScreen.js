@@ -5,8 +5,9 @@ import Layout from '../constants/Layout';
 
 export default class ConnectionFailureScreen extends React.Component {
   static navigationOptions = {
-    headerTitle: 'Button Setup',
+    headerTitle: 'Setup Completed',
     headerTintColor: 'white',
+    headerLeft: null,
     headerStyle: {
       backgroundColor: '#0C6A9B',
       height: Platform.OS === 'ios' ? 60: 80,
