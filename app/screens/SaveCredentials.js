@@ -90,11 +90,11 @@ class SaveCredentials extends React.Component {
           if (isEnabled) {            
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
             const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);
-            //console.log(password)                   
+            console.log(password)                   
             if (network === buttonAPNetwork) {              
               this.props.navigation.navigate("connectingButton");
             } else {                     
-              wifi.findAndConnect(buttonAPNetwork, '91874FAA', found => {
+              wifi.findAndConnect(buttonAPNetwork, password, found => {
                 if (found) {
                   this.props.navigation.navigate("connectingButton");
                 } else {
