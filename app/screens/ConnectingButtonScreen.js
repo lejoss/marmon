@@ -36,11 +36,15 @@ class ConnectingButtonScreen extends React.Component {
 	
 	async componentDidMount() {
     try {
-      await this.props.requestConfigureButton(this.props.button._id);
+      await this.props.requestConfigureButton();
       wifi.findAndConnect(this.props.networkCredentials.network, this.props.networkCredentials.password, found => {
-        if (found) {
-          this.props.requestProvisioning(this.props.button._id);
-          this.props.navigation.navigate('thankyou');
+        if (found) {                    
+          setTimeout(() => {
+            this.props.requestProvisioning(this.props.button.currentButton._id);
+            this.props.navigation.navigate('thankyou');
+          }, 9000);
+        } else {
+          console.log('connecting back error?')
         }
       })
     } catch (err) {

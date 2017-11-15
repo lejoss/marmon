@@ -89,21 +89,20 @@ class SaveCredentials extends React.Component {
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
-            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);
-            console.log(password)                   
-            if (network === buttonAPNetwork) {              
-              this.props.navigation.navigate("connectingButton");
-            } else {                     
-              wifi.findAndConnect(buttonAPNetwork, password, found => {
-                if (found) {
+            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);                             
+            
+            wifi.findAndConnect(buttonAPNetwork, password, found => {
+              if (found) {
+                setTimeout(() => {
+                  this.setState({ isDisabled: true }); 
                   this.props.navigation.navigate("connectingButton");
-                } else {
-                  this.setState({ isDisabled: false });                               
-                  Alert.alert("Could not connect to: ", buttonAPNetwork);
-                  return;
-                }
-              });
-            }
+                }, 2000)                  
+              } else {
+                this.setState({ isDisabled: false });                               
+                Alert.alert("Could not connect to: ", buttonAPNetwork);
+                return;
+              }
+            });
           } else {
             this.setState({ isDisabled: false }); 
             Alert.alert(

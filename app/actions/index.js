@@ -83,9 +83,9 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 		const dsn = button.currentButton.unique_id;
 		const body = createFormRequest({ button, setup }, dsn);
 
-		const { data } = await axios.post(url, body, config);		
-    console.log('data', JSON.stringify(data, null, 2))
-    dispatch(requestConfigureButtonSuccess(data));
+		const response = await axios.post(url, body, config);		
+    console.log('data', JSON.stringify(response, null, 2))
+    dispatch(requestConfigureButtonSuccess(response.data));
 	} catch (err) {
 		dispatch(requestConfigureButtonFailure(err));
 	}
