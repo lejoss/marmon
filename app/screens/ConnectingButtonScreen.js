@@ -43,12 +43,14 @@ class ConnectingButtonScreen extends React.Component {
     try {
       if (Platform.OS === "android") {
         await this.props.requestConfigureButton();
+        this.setState({ fakeLoading: true })
         wifi.findAndConnect(
           this.props.networkCredentials.network,
           this.props.networkCredentials.password,
           found => {
             if (found) {
               setTimeout(() => {
+                this.setState({ fakeLoading: false })
                 this.props.requestProvisioning(
                   this.props.button.currentButton._id
                 );
@@ -84,24 +86,6 @@ class ConnectingButtonScreen extends React.Component {
       }
     }
   }
-
-  _refresh = async () => {    
-    const network = await AsyncStorage.getItem('network');
-    NetworkInfo.getSSID(ssid => {
-      if (ssid) {
-        if (ssid === network) {
-          this.setState({ loading: true })
-          setTimeout(() => {
-            this.props.requestProvisioning(
-              this.props.button.currentButton._id
-            );
-          }, 5000);
-        } else {
-          Alert.alert('Success, please return to your local wifi network');
-        }
-      }
-  })
-}
 
   render() {
     return (
