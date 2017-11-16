@@ -14,7 +14,8 @@ import {
   StatusBar,
   AsyncStorage,
   Alert,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NetworkInfo } from "react-native-network-info";
@@ -45,14 +46,20 @@ class SaveCredentials extends React.Component {
       password: "",
       buttonSSID: "",
       isDisabled: false,
-      error: ""
+      error: "",
+      fakeLoading: false
     };
   }
 
   async componentDidMount() {
     try {
-      NetworkInfo.getSSID(network => this.setState({ network }));
-      //const network = await AsyncStorage.getItem("network");
+      if (Platform.OS === 'ios') {
+        const network = await AsyncStorage.getItem("network");
+        this.setState({ network })
+      } else {
+        NetworkInfo.getSSID(network => this.setState({ network }));
+      }
+      
       const buttonSSID = await AsyncStorage.getItem("buttonSSID");
       const password = await AsyncStorage.getItem("password");
       if (password && buttonSSID) {
@@ -74,7 +81,7 @@ class SaveCredentials extends React.Component {
         return;
       }
 
-      await AsyncStorage.setItem("network", password);
+      await AsyncStorage.setItem("network", network);
       await AsyncStorage.setItem("password", password);
       await AsyncStorage.setItem("buttonSSID", buttonSSID);
 
@@ -93,7 +100,7 @@ class SaveCredentials extends React.Component {
             
             wifi.findAndConnect(buttonAPNetwork, password, found => {
               if (found) {
-                this.setState({ isDisabled: true }); 
+                this.setState({ isDisabled: true, fakeLoading: true }); 
                 setTimeout(() => {
                   this.props.navigation.navigate("connectingButton");
                 }, 5000);            
@@ -110,12 +117,16 @@ class SaveCredentials extends React.Component {
             ); 
           }
         });
-      } else if (Platform.OS === "ios") {
-        this.setState({ error: "", isDisabled: true });        
+      } 
+      else if (Platform.OS === "ios") {
+        this.setState({ error: "" });        
         NetworkInfo.getSSID(ssid => {
           if (ssid) {
             if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
-              this.props.navigation.navigate("connectingButton");              
+              this.setState({ isDisabled: true, fakeLoading: true }); 
+              setTimeout(() => {
+                this.props.navigation.navigate("connectingButton");                 
+              }, 5000);                             
             } else {
               this.setState({ isDisabled: false }); 
               Alert.alert(
@@ -203,7 +214,8 @@ class SaveCredentials extends React.Component {
             >
               {this.state.error && this.state.error}
           </Text>       
-          </View>          
+          </View>
+          {this.state.fakeLoading && (<ActivityIndicator size="large" color="#0C6A9B" />)}       
           <View
             style={{ paddingTop: 40 }}
           >
