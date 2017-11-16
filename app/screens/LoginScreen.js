@@ -31,7 +31,7 @@ class LoginScreen extends React.Component {
   }
 
   async componentWillUpdate(nextProps) {
-    if (nextProps.isAuthenticated) {
+    if (nextProps.isAuthenticated === true) {
       await AsyncStorage.setItem('loginUsername', this.state.email);
       await AsyncStorage.setItem('loginPassword', this.state.password);
       this._resetNavigation();

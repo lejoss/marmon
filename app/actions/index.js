@@ -8,8 +8,8 @@ import { createFormRequest } from '../services/utils'
 const loginSuccess = token => ({ type: types.LOGIN_SUCCESS, payload: token });
 const loginFailure = err => ({ type: types.LOGIN_FAILURE, payload: err });
 
-const logoutSuccess = () => ({ type: "LOGOUT_SUCCESS", payload: { isAutenticated: false } });
-const logoutFailure = err => ({ type: "LOGOUT_FAILURE", payload: err });
+const logoutSuccess = () => ({ type: types.LOGOUT_SUCCESS, payload: { isAutenticated: false } });
+const logoutFailure = err => ({ type: types.LOGOUT_FAILURE, payload: err });
 
 const getButtonListFailure = err => ({ type: types.GET_BUTTON_LIST_FAILURE, payload: err });
 const getButtonListSuccess = payload => ({ type: types.GET_BUTTON_LIST_SUCCESS, payload });
@@ -37,10 +37,10 @@ export const login = user => async dispatch => {
   }
 };
 
-export const logout = (dispatch) => {
+export const destroySession = () => async dispatch => {
   try {
-    dispatch(logoutSuccess())
-  } catch (error) {
+    await dispatch(logoutSuccess())
+  } catch (err) {
     dispatch(logoutFailure(err))
   }
 }
