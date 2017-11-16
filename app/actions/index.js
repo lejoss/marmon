@@ -27,6 +27,7 @@ const saveCredentials = credentials => ({ type: types.SAVE_CREDENTIALS, payload:
 
 export const login = user => async dispatch => {
   try {
+    dispatch({ type: "REQUEST_LOGIN" })
     const url = 'http://stage.services.machineshop.io/api/v1/user_session/user/authenticate';    
     const { data: { authentication_token } } = await axios.post(url, JSON.stringify(user));
     const toBase64 = Base64.encode(authentication_token + ':X');

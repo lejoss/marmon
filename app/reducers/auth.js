@@ -8,18 +8,19 @@ const initialState = {
 
 export default function auth(state = initialState, action) {
 	switch (action.type) {
-	// case types.LOGIN_REQUEST:
-	//   return { ...state, isFetching: action.payload };
+	case "REQUEST_LOGIN":
+	  return { ...state, isFetching: true };
 	case types.LOGIN_SUCCESS:
-		return { ...state, isAuthenticated: true };
+		return { ...state, isAuthenticated: true, isFetching: false };
 	case "LOGOUT_SUCCESS":
-		return { ...state, isAuthenticated: false };
+		return { ...state, isAuthenticated: false, isFetching: false };
 		case "LOGOUT_FAILURE":
-		return state;	
+		return { ...state, isFetching: false };	
 	case types.LOGIN_FAILURE:
 		return {
 			...state,
 			isAuthenticated: false,
+			isFetching: false,
 			error: 'Invalid Username or Password'
 		};
 	default:
