@@ -1,3 +1,4 @@
+
 import React from "react";
 import { connect } from "react-redux";
 import { List, ListItem, Header } from "react-native-elements";
@@ -27,7 +28,7 @@ class ButtonListScreen extends React.Component {
       headerTintColor: "white",
       headerRight: (
         <TouchableOpacity onPress={params.logout ? params.logout : () => null}>
-          <Icon            
+          <Icon
             name={Platform.OS === "ios" ? "ios-log-out" : "md-log-out"}
             size={28}
             color="#fff"
@@ -79,7 +80,7 @@ class ButtonListScreen extends React.Component {
     <TouchableOpacity onPress={event => this._onSelectButton(event, item)}>
       <ListItem
         title={item.name.toUpperCase()}
-        titleStyle={{ fontSize: 20, color: "#5C5B5C" }}
+        titleStyle={{ fontSize: 18, color: "#5C5B5C" }}
         subtitle={`DSN: ${item.unique_id}`}
         subtitleStyle={{ fontSize: 14, color: "#868686" }}
         rightIcon={{ style: { display: "none" } }}
@@ -92,7 +93,7 @@ class ButtonListScreen extends React.Component {
     AsyncStorage.removeItem("loginUsername");
     AsyncStorage.removeItem("loginPassword");
     this.props.destroySession();
-  }
+  };
 
   _resetNavigation() {
     const resetAction = NavigationActions.reset({

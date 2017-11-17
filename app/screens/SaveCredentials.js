@@ -154,7 +154,7 @@ class SaveCredentials extends React.Component {
             <Text
               style={{
                 color: "#868686",
-                fontSize: 20,
+                fontSize: 18,
                 textAlign: "center",
                 paddingVertical: 20,
                 fontWeight: "bold"

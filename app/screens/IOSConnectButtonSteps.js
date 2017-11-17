@@ -33,7 +33,7 @@ export default class IOSConnectButtonSteps extends Component {
         <View style={{ flex: 2, justifyContent: 'center', paddingHorizontal: 8, paddingTop: 20 }}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 18,
               fontWeight: 'bold',
               textAlign: 'center',
               color: '#868686',

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   bold: {
     color: '#868686',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold'
   },
   content: {
