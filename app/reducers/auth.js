@@ -11,11 +11,11 @@ export default function auth(state = initialState, action) {
 	case "REQUEST_LOGIN":
 	  return { ...state, isFetching: true };
 	case types.LOGIN_SUCCESS:
-		return { ...state, isAuthenticated: true, isFetching: false };
+		return { ...state, isAuthenticated: true, isFetching: false, error: null };
 	case "LOGOUT_SUCCESS":
-		return { ...state, isAuthenticated: false, isFetching: false };
+		return { ...state, isAuthenticated: false, isFetching: false, error: null };
 		case "LOGOUT_FAILURE":
-		return { ...state, isFetching: false };	
+		return { ...state, isFetching: false, error: null };	
 	case types.LOGIN_FAILURE:
 		return {
 			...state,

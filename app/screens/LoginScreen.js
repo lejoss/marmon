@@ -32,19 +32,17 @@ class LoginScreen extends React.Component {
       error: null
     };
   }
+  
 
-  async componentDidMount() {
-    const username = await AsyncStorage.getItem("loginUsername");
-    const password = await AsyncStorage.getItem("loginPassword");
-
-    if (username && password) {
-      this.setState({ email: username, password });
-      this.props.login({ email: username, password });
-    }
+  componentDidMount() {
+    AsyncStorage.getItem("loginUsername").then(email => this.setState({ email }));
+    AsyncStorage.getItem("loginPassword").then(password => this.setState({ password }));
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.isAuthenticated === true) {
+      AsyncStorage.setItem("loginUsername", this.state.email);
+      AsyncStorage.setItem("loginPassword", this.state.password);
       this._resetNavigation();
      }
   }
@@ -63,14 +61,11 @@ class LoginScreen extends React.Component {
     );
   };
 
-  _onSubmit = async event => {
+  _onSubmit = event => {
     event.preventDefault();
     const { email, password } = this.state;
     const { login } = this.props;
-
     if (email !== "" || password !== "") {
-      await AsyncStorage.setItem("loginUsername", email);
-      await AsyncStorage.setItem("loginPassword", password);
       login(this.state);
     } 
   };

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { List, ListItem, Header } from "react-native-elements";
 import Icon from "react-native-vector-icons/dist/Ionicons";
 import { selectFilteredButtons } from "../selectors";
+import { NavigationActions } from "react-navigation";
 import {
   StyleSheet,
   Text,
@@ -42,12 +43,9 @@ class ButtonListScreen extends React.Component {
     };
   };
 
-  componentDidMount() {
-    this.props.navigation.setParams({ logout: this._logout });
-  }
-
-  async componentWillMount() {
+  async componentDidMount() {
     try {
+      this.props.navigation.setParams({ logout: this._logout });
       await Promise.all([
         this.props.requestGatewayDataSources(),
         this.props.requestIntegrations()
@@ -62,7 +60,7 @@ class ButtonListScreen extends React.Component {
   componentWillUpdate(nextProps) {
     if (nextProps) {
       if (nextProps.isAuth === false) {
-        this.props.navigation.navigate("Login");
+        this._resetNavigation();
       }
     }
   }
@@ -90,10 +88,18 @@ class ButtonListScreen extends React.Component {
     </TouchableOpacity>
   );
 
-  _logout = async () => {
-    await AsyncStorage.removeItem("loginUsername");
-    await AsyncStorage.removeItem("loginPassword");
+  _logout = () => {
+    AsyncStorage.removeItem("loginUsername");
+    AsyncStorage.removeItem("loginPassword");
     this.props.destroySession();
+  }
+
+  _resetNavigation() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "Login" })]
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   render() {
