@@ -190,7 +190,7 @@ class SaveCredentials extends React.Component {
               ref={input => (this.passwordInput = input)}
             />
             <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
-              Button Network SSID
+              Last 3 characters of Button ConfigureMe
             </FormLabel>
             <FormInput
               underlineColorAndroid="#0C6A9B"
