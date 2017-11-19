@@ -7,11 +7,8 @@ const initialState = {
 
 export default function user(state = initialState, action) {
 	switch (action.type) {    
-	case types.LOGIN_SUCCESS:
-		return { ...state, login: action.payload.login };
-
-	case types.SAVE_CREDENTIALS:
-		return { ...state, wifi: action.payload };
+	case types.SAVE_LOGIN_CREDENTIALS_SUCCESS:
+		return { ...state, login: action.payload };
 	default:
 		return state;
 	}

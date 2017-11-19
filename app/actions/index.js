@@ -5,8 +5,13 @@ import { createFormRequest } from '../services/utils'
 
 // action creators
 
+const saveLoginCredentialsSuccess = payload => ({ type: types.SAVE_LOGIN_CREDENTIALS_SUCCESS, payload });
 
-const loginSuccess = (token, login) => ({ type: types.LOGIN_SUCCESS, payload: { token, login } });
+const requestSaveWIFICredentials = () => ({ type: types.REQUEST_SAVE_WIFI_CREDENTIALS });
+const saveWIFICredentialsSuccess = payload => ({ type: types.SAVE_WIFI_CREDENTIALS_SUCCESS, payload });
+const saveWIFICredentialsFailure = () => ({ type: types.SAVE_WIFI_CREDENTIALS_FAILURE });
+
+const loginSuccess = token => ({ type: types.LOGIN_SUCCESS, payload: token });
 const loginFailure = err => ({ type: types.LOGIN_FAILURE, payload: err });
 
 const logoutSuccess = () => ({ type: types.LOGOUT_SUCCESS, payload: { isAutenticated: false } });
@@ -33,7 +38,8 @@ export const login = user => async dispatch => {
     const { data: { authentication_token } } = await axios.post(url, JSON.stringify(user));
     const toBase64 = Base64.encode(authentication_token + ':X');
     axios.defaults.headers.common['Authorization'] = `Basic ${toBase64}`;
-    await dispatch(loginSuccess(`Basic ${toBase64}`, user));
+    dispatch(loginSuccess(`Basic ${toBase64}`));
+    dispatch(saveLoginCredentialsSuccess(user));
   } catch (err) {
     dispatch(loginFailure(err));
   }

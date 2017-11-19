@@ -14,8 +14,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StatusBar,
-  Alert,
-  AsyncStorage
+  Alert
 } from "react-native";
 import * as actions from "../actions";
 
@@ -58,9 +57,9 @@ class ButtonListScreen extends React.Component {
     }
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps) {
-      if (nextProps.isAuth === false) {
+      if (this.props.isAuthenticated && !nextProps.isAuthenticated) {
         this._resetNavigation();
       }
     }
@@ -90,8 +89,6 @@ class ButtonListScreen extends React.Component {
   );
 
   _logout = () => {
-    // AsyncStorage.removeItem("loginUsername");
-    // AsyncStorage.removeItem("loginPassword");
     this.props.destroySession();
   };
 
@@ -135,7 +132,7 @@ class ButtonListScreen extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isAuth: state.auth.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
     buttons: selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
