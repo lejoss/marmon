@@ -42,11 +42,18 @@ class ButtonListScreen extends React.Component {
       }
     };
   };
-
-  componentDidMount() {
-    this.props.navigation.setParams({ logout: this._logout });
-    this.props.requestGatewayDataSources();
-    this.props.requestIntegrations();
+  async componentDidMount() {
+    try {
+      this.props.navigation.setParams({ logout: this._logout });
+      await Promise.all([
+        this.props.requestGatewayDataSources(),
+        this.props.requestIntegrations()
+      ]);
+    } catch (error) {
+      Alert.alert(
+        "Could not load buttons, check wifi services or try restarting the App"
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {

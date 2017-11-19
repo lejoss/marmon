@@ -62,7 +62,7 @@ export const requestGatewayDataSources = user => async (dispatch, getState) => {
   }
 };
 
-export const requestIntegrations = user => async dispatch => {
+export const requestIntegrations = user => async (dispatch, getState) => {
   try {
     dispatch({ type: types.REQUEST_INTEGRATIONS })
     const { auth: { token } } = getState();

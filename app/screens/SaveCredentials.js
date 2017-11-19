@@ -50,11 +50,14 @@ class SaveCredentials extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.wifiCredentials && nextProps.wifiCredentials) {
+  componentDidMount() {
+    const { wifiCredentials } = this.props;
+
+    if (wifiCredentials) {
       this.setState({
-        network: nextProps.wifiCredentials.network,
-        password: nextProps.wifiCredentials.password,
+        network: wifiCredentials.network,
+        password: wifiCredentials.password,
+        buttonSSID: wifiCredentials.buttonSSID
       })
     }
   }
@@ -132,7 +135,6 @@ class SaveCredentials extends React.Component {
   render() {
     const { network, password, buttonSSID, isDisabled } = this.state;
     return (
-
         <KeyboardAwareScrollView style={styles.container}>
           <View style={{ flex: 2, justifyContent: "center" }}>
             <Text
