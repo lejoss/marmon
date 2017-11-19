@@ -33,16 +33,14 @@ class LoginScreen extends React.Component {
     };
   }
 
-  componentWillMount() {
-    const { loginCreds, isAuthenticated } = this.props;
+  componentDidMount() {
+    const { loginCreds } = this.props;
     if (loginCreds) {
-      this.setState({ email: loginCreds.email, password: loginCreds.password })
+      this.setState({
+        email: loginCreds.email,
+        password: loginCreds.password
+      })
     }
-
-    // if (loginCreds) {
-    //   this.props.login(loginCreds);
-    // }
-
   }
 
   componentWillUpdate(nextProps) {

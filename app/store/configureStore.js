@@ -7,10 +7,11 @@ import { composeWithDevTools } from 'remote-redux-devtools';
 import reducer from '../reducers';
 import * as actionCreators from '../actions';
 
+
 const config = {
   key: 'root',
-  storage: AsyncStorage,
-  whitelist: ['auth.login', 'setup']
+  storage,
+  whitelist: ['auth', 'setup']
 }
 
 const combinedReducer = persistCombineReducers(config, reducer);

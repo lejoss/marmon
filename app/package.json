@@ -24,6 +24,7 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-persist": "^5.4.0",
+    "redux-persist-transform-filter": "0.0.16",
     "redux-thunk": "^2.2.0",
     "remote-redux-devtools": "^0.5.12",
     "wordwrap": "^1.0.0"
