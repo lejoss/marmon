@@ -12,7 +12,6 @@ import {
   Platform,
   Linking,
   StatusBar,
-  AsyncStorage,
   Alert,
   KeyboardAvoidingView,
   ActivityIndicator
@@ -221,7 +220,7 @@ class SaveCredentials extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    wifiCredentials: state.user.wifi,
+    wifiCredentials: state.setup.networkCredentials,
     currentButton: state.button.currentButton
   };
 };

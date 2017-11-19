@@ -43,18 +43,10 @@ class ButtonListScreen extends React.Component {
     };
   };
 
-  async componentDidMount() {
-    try {
-      this.props.navigation.setParams({ logout: this._logout });
-      await Promise.all([
-        this.props.requestGatewayDataSources(),
-        this.props.requestIntegrations()
-      ]);
-    } catch (error) {
-      Alert.alert(
-        "Could not load buttons, check wifi services or try restarting the App"
-      );
-    }
+  componentDidMount() {
+    this.props.navigation.setParams({ logout: this._logout });
+    this.props.requestGatewayDataSources();
+    this.props.requestIntegrations();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,18 +57,13 @@ class ButtonListScreen extends React.Component {
     }
   }
 
-  async _onSelectButton(event, button) {
-    event.preventDefault();
-    try {
-      await this.props.setCurrentButton(button);
-      this.props.navigation.navigate("buttonMode");
-    } catch (error) {
-      Alert.alert("could not select the button");
-    }
+  _onSelectButton(button) {
+    this.props.setCurrentButton(button);
+    this.props.navigation.navigate("buttonMode");
   }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity onPress={event => this._onSelectButton(event, item)}>
+    <TouchableOpacity onPress={() => this._onSelectButton(item)}>
       <ListItem
         title={item.name.toUpperCase()}
         titleStyle={{ fontSize: 18, color: "#5C5B5C" }}

@@ -18,6 +18,7 @@ import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import BackgroundImage from "../components/BackgroundImage";
 import * as actions from "../actions";
+import auth from "../reducers/auth";
 
 class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -32,9 +33,21 @@ class LoginScreen extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isAuthenticated === true) {
-      this._resetNavigation();
+  componentWillMount() {
+    const { loginCreds, isAuthenticated } = this.props;
+    if (loginCreds) {
+      this.setState({ email: loginCreds.email, password: loginCreds.password })
+    }
+
+    // if (loginCreds) {
+    //   this.props.login(loginCreds);
+    // }
+
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps && nextProps.isAuthenticated) { 
+      this._resetNavigation();      
      }
   }
 
@@ -54,9 +67,9 @@ class LoginScreen extends React.Component {
 
   _onSubmit = () => {
     const { email, password } = this.state;
-    const { login, requestSaveLoginCredentials } = this.props;
-    if (email !== "" || password !== "") {
-      login(this.state);      
+    const { login } = this.props;
+    if (email !== "" || password !== "") {      
+      login(this.state);
     } 
   };
 
@@ -140,6 +153,7 @@ const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
     isFetching: state.auth.isFetching,
+    loginCreds: state.auth.login,
     error: state.auth.error
   };
 };

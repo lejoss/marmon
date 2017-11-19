@@ -10,7 +10,7 @@ import * as actionCreators from '../actions';
 const config = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth']
+  whitelist: ['auth.login', 'setup']
 }
 
 const combinedReducer = persistCombineReducers(config, reducer);

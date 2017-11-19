@@ -3,7 +3,8 @@ import * as types from "../constants/ActionTypes";
 const initialState = {
   isFetching: false,
   isAuthenticated: false,
-  error: null
+  error: null,
+  login: null
 };
 
 export default function auth(state = initialState, action) {
@@ -15,14 +16,16 @@ export default function auth(state = initialState, action) {
         ...state,
         isAuthenticated: true,
         isFetching: false,
-        error: null
+        error: null,
+        login: action.payload.loginCredentials
       };
     case "LOGOUT_SUCCESS":
       return {
         ...state,
         isAuthenticated: false,
         isFetching: false,
-				error: null,
+        error: null,
+        login: null
       };
     case "LOGOUT_FAILURE":
       return { ...state, isFetching: false, error: null };
