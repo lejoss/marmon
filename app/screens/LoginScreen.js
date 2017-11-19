@@ -28,20 +28,12 @@ class LoginScreen extends React.Component {
     super(props);
     this.state = {
       email: "",
-      password: "",
-      error: null
+      password: ""
     };
   }
 
-  componentDidMount() {
-    AsyncStorage.getItem("loginUsername").then(email => this.setState({ email }));
-    AsyncStorage.getItem("loginPassword").then(password => this.setState({ password }));
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isAuthenticated && nextProps.isAuthenticated) {
-      AsyncStorage.setItem("loginUsername", this.state.email);
-      AsyncStorage.setItem("loginPassword", this.state.password);
+    if (nextProps.isAuthenticated === true) {
       this._resetNavigation();
      }
   }
@@ -62,9 +54,9 @@ class LoginScreen extends React.Component {
 
   _onSubmit = () => {
     const { email, password } = this.state;
-    const { login } = this.props;
+    const { login, requestSaveLoginCredentials } = this.props;
     if (email !== "" || password !== "") {
-      login(this.state);
+      login(this.state);      
     } 
   };
 

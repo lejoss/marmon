@@ -1,12 +1,25 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { persistStore, persistCombineReducers } from 'redux-persist';
+import { AsyncStorage } from 'react-native';
+import storage from 'redux-persist/es/storage';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import reducer from '../reducers';
 import * as actionCreators from '../actions';
 
+const config = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['auth']
+}
+
+const combinedReducer = persistCombineReducers(config, reducer);
+
 export default function configureStore(initialState) {
   const composeEnhancers = composeWithDevTools({ realtime: true, actionCreators });
-  const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+
+  let store = createStore(combinedReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+  let persistor = persistStore(store)
 
   // don't delete this
   /*
@@ -18,5 +31,5 @@ export default function configureStore(initialState) {
   );
   */
 
-  return store;
+  return { persistor, store };
 }

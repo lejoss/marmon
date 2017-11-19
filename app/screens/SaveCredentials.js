@@ -51,24 +51,13 @@ class SaveCredentials extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    try {
-      if (Platform.OS === 'ios') {
-        const network = await AsyncStorage.getItem("network");
-        this.setState({ network })
-      } else {
-        NetworkInfo.getSSID(network => this.setState({ network }));
-      }
-      
-      const buttonSSID = await AsyncStorage.getItem("buttonSSID");
-      const password = await AsyncStorage.getItem("password");
-      if (password && buttonSSID) {
-        this.setState({
-          password,
-          buttonSSID
-        });
-      }
-    } catch (err) {}
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.wifiCredentials && nextProps.wifiCredentials) {
+      this.setState({
+        network: nextProps.wifiCredentials.network,
+        password: nextProps.wifiCredentials.password,
+      })
+    }
   }
 
   _connectToButtonAP = async () => {
@@ -80,10 +69,6 @@ class SaveCredentials extends React.Component {
         this.setState({ error: "Please complete the form" });
         return;
       }
-
-      await AsyncStorage.setItem("network", network);
-      await AsyncStorage.setItem("password", password);
-      await AsyncStorage.setItem("buttonSSID", buttonSSID);
 
       this.props.saveNetworkCredentials({
         network,
@@ -236,7 +221,7 @@ class SaveCredentials extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    creds: state.setup.networkCredentials,
+    wifiCredentials: state.user.wifi,
     currentButton: state.button.currentButton
   };
 };

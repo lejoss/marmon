@@ -5,7 +5,8 @@ import { createFormRequest } from '../services/utils'
 
 // action creators
 
-const loginSuccess = token => ({ type: types.LOGIN_SUCCESS, payload: token });
+
+const loginSuccess = (token, login) => ({ type: types.LOGIN_SUCCESS, payload: { token, login } });
 const loginFailure = err => ({ type: types.LOGIN_FAILURE, payload: err });
 
 const logoutSuccess = () => ({ type: types.LOGOUT_SUCCESS, payload: { isAutenticated: false } });
@@ -32,21 +33,21 @@ export const login = user => async dispatch => {
     const { data: { authentication_token } } = await axios.post(url, JSON.stringify(user));
     const toBase64 = Base64.encode(authentication_token + ':X');
     axios.defaults.headers.common['Authorization'] = `Basic ${toBase64}`;
-    dispatch(loginSuccess(`Basic ${toBase64}`));
+    await dispatch(loginSuccess(`Basic ${toBase64}`, user));
   } catch (err) {
     dispatch(loginFailure(err));
   }
 };
 
-export const destroySession = () => async dispatch => {
+export const destroySession = () => dispatch => {
   try {
-    await dispatch(logoutSuccess())
+    dispatch(logoutSuccess())
   } catch (err) {
     dispatch(logoutFailure(err))
   }
 }
 
-export const saveNetworkCredentials = credentials => async (dispatch) => {
+export const saveNetworkCredentials = credentials => (dispatch) => {
   dispatch(saveCredentials(credentials));
 }
 

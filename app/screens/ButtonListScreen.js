@@ -90,8 +90,8 @@ class ButtonListScreen extends React.Component {
   );
 
   _logout = () => {
-    AsyncStorage.removeItem("loginUsername");
-    AsyncStorage.removeItem("loginPassword");
+    // AsyncStorage.removeItem("loginUsername");
+    // AsyncStorage.removeItem("loginPassword");
     this.props.destroySession();
   };
 

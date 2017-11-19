@@ -2,11 +2,11 @@ import { combineReducers } from "redux";
 import auth from "./auth";
 import button from "./button";
 import setup from "./setup";
+import user from "./user";
 
-const rootReducer = combineReducers({
+export default {
 	auth,
 	button,
-	setup
-});
-
-export default rootReducer;
+	setup,
+	user
+}
