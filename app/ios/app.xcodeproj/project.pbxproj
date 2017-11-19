@@ -1332,7 +1332,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = marmon.keystone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marmon.keystone;
 				PRODUCT_NAME = app;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1361,8 +1361,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = marmon.keystone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marmon.keystone;
 				PRODUCT_NAME = app;
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
