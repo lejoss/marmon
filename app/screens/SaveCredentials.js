@@ -52,12 +52,18 @@ class SaveCredentials extends React.Component {
 
   componentDidMount() {
     const { wifiCredentials } = this.props;
-
     if (wifiCredentials) {
       this.setState({
         network: wifiCredentials.network,
         password: wifiCredentials.password,
         buttonSSID: wifiCredentials.buttonSSID
+      })
+    } 
+    if (this.state.network === '') {
+      NetworkInfo.getSSID(ssid => {
+        if (ssid) {
+          this.setState({ network: ssid })
+        }
       })
     }
   }

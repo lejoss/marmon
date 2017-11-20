@@ -44,7 +44,7 @@ class ButtonListScreen extends React.Component {
   };
 
   componentWillMount() {
-    setTimeout(() => this.props.navigation.setParams({ logout: this._logout.bind(this) }), 1000);
+    this.props.navigation.setParams({ logout: this._logout.bind(this) }); 
   }
 
   async componentDidMount() {

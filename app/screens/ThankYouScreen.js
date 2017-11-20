@@ -6,19 +6,13 @@ import Layout from '../constants/Layout';
 
 export default class ThankYouScreen extends React.Component {
   static navigationOptions = {
-    headerTitle: 'Setup Completed',
-    headerTintColor: 'white',
-    headerLeft: null,
-    headerStyle: {
-      backgroundColor: '#0C6A9B',
-      height: Platform.OS === 'ios' ? 60: 80,
-      paddingTop: 20
-    },
+    header: null
   };
 
   _resetNavigation() {
     const resetAction = NavigationActions.reset({
       index: 0,
+      key: null,
       actions: [NavigationActions.navigate({ routeName: 'list' })],
     });
     this.props.navigation.dispatch(resetAction);
