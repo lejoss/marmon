@@ -30,7 +30,7 @@ export default class IOSConnectButtonSteps extends Component {
     const iconName = Platform.OS === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-forward';
     return (
       <View style={styles.container}>
-        <View style={{ flex: 2, justifyContent: 'center', paddingHorizontal: 8, paddingTop: 20 }}>
+        <View style={{ flex: 3, justifyContent: 'center', paddingHorizontal: 8, paddingTop: 20 }}>
           <Text
             style={{
               fontSize: 18,
@@ -42,20 +42,21 @@ export default class IOSConnectButtonSteps extends Component {
           >
             Connect to your Buttons's Wi-Fi
           </Text>
-          <View style={{ paddingHorizontal: 16 }}>
-            <Text style={{ color: '#868686' }}>1. Press the home button on your iPhone</Text>
+          <View style={{ paddingHorizontal: 8 }}>
+            <Text style={{ color: '#868686' }}>1. Press the home button on your iPhone.</Text>
             <Text style={{ color: '#868686' }}>
               2. Open{' '}
                 iPhone{' '}
 								Settings{' '}
-								select Wi-Fi
+								select Wi-Fi.
             </Text>
             <Text style={{ color: '#868686' }}>
               3. Select Button{' '}
-              <Text style={{ color: '#868686' }}>ConfigureMe - XXX network</Text>
+              <Text style={{ color: '#868686' }}>ConfigureMe - XXX Network.</Text>
             </Text>
-            <Text style={{ color: '#868686' }}>4. Remember the last 3 letters from the Button ConfigureMe</Text>
-            <Text style={{ color: '#868686' }}>5. Return to Marmon App and Continue</Text>
+            <Text style={{ color: '#868686' }}>4. Password is the last 8 characters of the device serial number (DSN). You'll find the DSN on the back of the device. </Text>
+            <Text style={{ color: '#868686' }}>5. Remember the last 3 characters from the Button ConfigureMe Network.</Text>
+            <Text style={{ color: '#868686' }}>6. Return to Marmon App and Continue.</Text>
           </View>
         </View>
         <View style={{ justifyContent: 'center', flex: 1 }}>          
@@ -75,6 +76,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 16,
   },
 });

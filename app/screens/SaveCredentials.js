@@ -57,14 +57,14 @@ class SaveCredentials extends React.Component {
         network: wifiCredentials.network,
         password: wifiCredentials.password,
         buttonSSID: wifiCredentials.buttonSSID
-      })
-    } 
-    if (this.state.network === '') {
+      });
+    }
+    if (this.state.network === "") {
       NetworkInfo.getSSID(ssid => {
         if (ssid) {
-          this.setState({ network: ssid })
+          this.setState({ network: ssid });
         }
-      })
+      });
     }
   }
 
@@ -76,7 +76,7 @@ class SaveCredentials extends React.Component {
       isDisabled: false,
       error: "",
       fakeLoading: false
-    })
+    });
   }
 
   _connectToButtonAP = async () => {
@@ -87,73 +87,73 @@ class SaveCredentials extends React.Component {
       if (network === "" || password === "" || buttonSSID === "") {
         this.setState({ error: "Please complete the form" });
         return;
-      }      
-      
+      }
+
       if (Platform.OS == "android") {
-        this.setState({ error: "" });             
+        this.setState({ error: "" });
         wifi.isEnabled(isEnabled => {
-          if (isEnabled) {            
+          if (isEnabled) {
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
-            const _password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);                             
-            
+            const _password = this.props.currentButton.unique_id
+              .toUpperCase()
+              .slice(8, 16);
             wifi.findAndConnect(buttonAPNetwork, _password, found => {
               if (found) {
-                this.setState({ isDisabled: true, fakeLoading: true }); 
+                this.setState({ isDisabled: true, fakeLoading: true });
                 setTimeout(() => {
                   this.setState({
                     isDisabled: false,
                     error: "",
                     fakeLoading: false
-                  })
+                  });
                   this.props.saveNetworkCredentials({
                     network,
                     password,
                     buttonSSID
                   });
                   this.props.navigation.navigate("connectingButton");
-                }, 5000);            
+                }, 5000);
               } else {
-                this.setState({ isDisabled: false });                               
+                this.setState({ isDisabled: false });
                 Alert.alert("Could not connect to: ", buttonAPNetwork);
                 return;
               }
             });
           } else {
-            this.setState({ isDisabled: false }); 
+            this.setState({ isDisabled: false });
             Alert.alert(
               "wifi service is disabled, connect to wifi and try again"
-            ); 
+            );
           }
         });
-      } 
-      else if (Platform.OS === "ios") {
-        this.setState({ error: "" });        
+      } else if (Platform.OS === "ios") {
+        this.setState({ error: "" });
         NetworkInfo.getSSID(ssid => {
           if (ssid) {
             if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
-              this.setState({ isDisabled: true, fakeLoading: true }); 
+              this.setState({ isDisabled: true, fakeLoading: true });
               setTimeout(() => {
                 this.setState({
                   isDisabled: false,
                   error: "",
                   fakeLoading: false
-                })
+                });
                 this.props.saveNetworkCredentials({
                   network,
                   password,
                   buttonSSID
                 });
-                this.props.navigation.navigate("connectingButton");                 
-              }, 5000);                             
+                this.props.navigation.navigate("connectingButton");
+              }, 5000);
             } else {
-              this.setState({ isDisabled: false }); 
+              this.setState({ isDisabled: false });
               Alert.alert(
                 "Please connect to ButtonConfigure me before continue."
               );
               return;
             }
           } else {
-            this.setState({ isDisabled: false }); 
+            this.setState({ isDisabled: false });
             Alert.alert(
               "wifi service is disabled, connect to wifi and try again"
             );
@@ -166,8 +166,14 @@ class SaveCredentials extends React.Component {
   render() {
     const { network, password, buttonSSID, isDisabled } = this.state;
     return (
-        <KeyboardAwareScrollView style={styles.container}>
-          <View style={{ flex: 2, justifyContent: "center" }}>
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
+          <View
+            style={{
+              flex: 3,
+              justifyContent: "center",
+            }}
+          >
             <Text
               style={{
                 color: "#868686",
@@ -219,7 +225,7 @@ class SaveCredentials extends React.Component {
               autoCorrect={false}
               inputStyle={{ paddingLeft: 5 }}
               ref={input => (this.buttonSSID = input)}
-            />     
+            />
             <Text
               style={{
                 paddingLeft: 20,
@@ -230,22 +236,28 @@ class SaveCredentials extends React.Component {
               }}
             >
               {this.state.error && this.state.error}
-          </Text>       
+            </Text>
+            {this.state.fakeLoading && (
+              <ActivityIndicator size="large" color="#0C6A9B" />
+            )}
           </View>
-          {this.state.fakeLoading && (<ActivityIndicator size="large" color="#0C6A9B" />)}       
           <View
-            style={{ paddingTop: 40 }}
-          >
+            style={{
+              flex: 1,              
+            }}
+          >            
             <Button
-              buttonStyle={{ backgroundColor: "#0C6A9B", justifyContent: 'center' }}
+              buttonStyle={{
+                backgroundColor: "#0C6A9B"
+              }}
               raised
               title="NEXT"
-              disabled={isDisabled}            
+              disabled={isDisabled}
               onPress={this._connectToButtonAP}
             />
           </View>
-        </KeyboardAwareScrollView>
-
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -263,9 +275,7 @@ export default connect(mapStateToProps, actions)(SaveCredentials);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     height: Layout.window.height,
-    flexDirection: 'column',
-    paddingHorizontal: 16
+    backgroundColor: '#fff' 
   }
 });
