@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView,
   AsyncStorage
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import BackgroundImage from "../components/BackgroundImage";
@@ -73,10 +74,10 @@ class LoginScreen extends React.Component {
   };
 
   render() {
-    const isIOS = Platform.OS === "ios" ? true : false;
+    const isIOS = Platform.OS === "ios" ? true : false; //{...isIOS ? { behavior: 'padding' } : {} }
     return (
       <BackgroundImage>
-        <KeyboardAvoidingView style={styles.container}>
+        <KeyboardAvoidingView   style={styles.container}>
           <View style={{ flex: 2, justifyContent: "flex-end" }}>
             <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
               Email or Username
@@ -102,7 +103,7 @@ class LoginScreen extends React.Component {
               autoCapitalize="none"
               returnKeyType="go"
               autoCorrect={false}
-              inputStyle={{ paddingLeft: 5 }}
+              inputStyle={{ paddingLeft: 5, backgroundColor: 'transparent' }}
               secureTextEntry
               ref={input => (this.passwordInput = input)}
             />
@@ -162,7 +163,7 @@ export default connect(mapStateToProps, actions)(LoginScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16
+    paddingHorizontal: 8
   },
   rowValidation: {
     flexDirection: "row",
