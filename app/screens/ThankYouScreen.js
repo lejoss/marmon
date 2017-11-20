@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Platform, Image, WebView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Platform, Image, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import Layout from '../constants/Layout';
@@ -11,8 +11,8 @@ export default class ThankYouScreen extends React.Component {
     headerLeft: null,
     headerStyle: {
       backgroundColor: '#0C6A9B',
-      height: Platform.OS === 'ios' ?60 : 80,
-      paddingTop: 20,
+      height: Platform.OS === 'ios' ? 60: 80,
+      paddingTop: 20
     },
   };
 
@@ -27,6 +27,7 @@ export default class ThankYouScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar translucent backgroundColor="#0D4969" />
         <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ fontSize: 14, textAlign: 'center' }}>
             <Text style={styles.bold}>Your Dash Button{"\n"} </Text>

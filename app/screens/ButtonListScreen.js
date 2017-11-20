@@ -19,14 +19,14 @@ import {
 import * as actions from "../actions";
 
 class ButtonListScreen extends React.Component {
-  static navigationOptions = ({ navigation, screenProps }) => {
+  static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
       headerTitle: "Select Button",
       headerLeft: null,
       headerTintColor: "white",
       headerRight: (
-        <TouchableOpacity onPress={params.logout ? params.logout : () => null}>
+        <TouchableOpacity onPress={params.logout && params.logout}>
           <Icon
             name={Platform.OS === "ios" ? "ios-log-out" : "md-log-out"}
             size={28}
@@ -42,13 +42,17 @@ class ButtonListScreen extends React.Component {
       }
     };
   };
+
+  componentWillMount() {
+    setTimeout(() => this.props.navigation.setParams({ logout: this._logout.bind(this) }), 1000);
+  }
+
   async componentDidMount() {
-    try {
-      this.props.navigation.setParams({ logout: this._logout });
+    try {      
       await Promise.all([
         this.props.requestGatewayDataSources(),
         this.props.requestIntegrations()
-      ]);
+      ]);      
     } catch (error) {
       Alert.alert(
         "Could not load buttons, check wifi services or try restarting the App"
@@ -82,7 +86,7 @@ class ButtonListScreen extends React.Component {
     </TouchableOpacity>
   );
 
-  _logout = () => {
+  _logout() {
     this.props.destroySession();
   };
 
@@ -127,7 +131,7 @@ class ButtonListScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    buttons: selectFilteredButtons(state),
+    buttons: state.button.buttons,//selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
 };

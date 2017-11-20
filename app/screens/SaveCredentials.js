@@ -62,6 +62,17 @@ class SaveCredentials extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.setState({
+      network: "",
+      password: "",
+      buttonSSID: "",
+      isDisabled: false,
+      error: "",
+      fakeLoading: false
+    })
+  }
+
   _connectToButtonAP = async () => {
     try {
       const { network, password, buttonSSID } = this.state;
@@ -70,25 +81,29 @@ class SaveCredentials extends React.Component {
       if (network === "" || password === "" || buttonSSID === "") {
         this.setState({ error: "Please complete the form" });
         return;
-      }
-
-      this.props.saveNetworkCredentials({
-        network,
-        password,
-        buttonSSID
-      });
+      }      
       
       if (Platform.OS == "android") {
         this.setState({ error: "" });             
         wifi.isEnabled(isEnabled => {
           if (isEnabled) {            
             const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
-            const password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);                             
+            const _password = this.props.currentButton.unique_id.toUpperCase().slice(8, 16);                             
             
-            wifi.findAndConnect(buttonAPNetwork, password, found => {
+            wifi.findAndConnect(buttonAPNetwork, _password, found => {
               if (found) {
                 this.setState({ isDisabled: true, fakeLoading: true }); 
                 setTimeout(() => {
+                  this.setState({
+                    isDisabled: false,
+                    error: "",
+                    fakeLoading: false
+                  })
+                  this.props.saveNetworkCredentials({
+                    network,
+                    password,
+                    buttonSSID
+                  });
                   this.props.navigation.navigate("connectingButton");
                 }, 5000);            
               } else {
@@ -112,6 +127,16 @@ class SaveCredentials extends React.Component {
             if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
               this.setState({ isDisabled: true, fakeLoading: true }); 
               setTimeout(() => {
+                this.setState({
+                  isDisabled: false,
+                  error: "",
+                  fakeLoading: false
+                })
+                this.props.saveNetworkCredentials({
+                  network,
+                  password,
+                  buttonSSID
+                });
                 this.props.navigation.navigate("connectingButton");                 
               }, 5000);                             
             } else {
@@ -180,7 +205,7 @@ class SaveCredentials extends React.Component {
             </FormLabel>
             <FormInput
               underlineColorAndroid="#0C6A9B"
-              value={buttonSSID.toUpperCase()}
+              value={buttonSSID && buttonSSID.toUpperCase()}
               onChangeText={buttonSSID => this.setState({ buttonSSID })}
               autoCapitalize="none"
               returnKeyType="go"

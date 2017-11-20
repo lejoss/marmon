@@ -77,11 +77,10 @@ export const requestIntegrations = user => async (dispatch, getState) => {
 export const requestConfigureButton = () => async (dispatch, getState) => {
 	try {
 		dispatch({ type: types.REQUEST_CONFIGURE_BUTTON });
-		const { button, setup, auth } = getState();			
+		const { button, setup, auth } = getState();		
     const url = 'http://192.168.0.1/configure';
     const config = {
-      'Content-Type': 'multipart/form-data; charset=utf-8',
-      'headers': { Authorization: `Basic ${auth.token}` } 
+      'Content-Type': 'multipart/form-data; charset=utf-8'
     }
 		const dsn = button.currentButton.unique_id;
 		const body = createFormRequest({ button, setup }, dsn);
@@ -89,18 +88,19 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 		const response = await axios.post(url, body, config);		
     dispatch(requestConfigureButtonSuccess(response));
 	} catch (err) {
-		dispatch(requestConfigureButtonFailure(err));
+		dispatch(requestConfigureButtonFailure(err.response.status));
 	}
 }
 
 export const requestProvisioning = (buttonId) => async (dispatch, getState) => {
 	try {
-		dispatch({ type: types.REQUEST_PROVISIONING });
+    dispatch({ type: types.REQUEST_PROVISIONING });
+    const { auth: { token } } = getState();
 		const url = `http://stage.services.machineshop.io/api/v1/platform/gateway_data_sources/${buttonId}/provision_marmon_button`;
 		const response = await axios.put(url, {}, { headers: { Authorization: `Basic ${token}` } });
 		dispatch(requestProvisioningSuccess(response));
 	} catch (err) {
-		dispatch(requestProvisioningFailure(err));
+		dispatch(requestProvisioningFailure(err.response.status));
 	}
 }
 

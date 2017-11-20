@@ -1,7 +1,7 @@
 import * as types from "../constants/ActionTypes";
 
 const initialState = {
-	networkCredentials: {},
+	networkCredentials: null,
 };
 
 export default function setup(state = initialState, action) {

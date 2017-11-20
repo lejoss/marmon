@@ -20,11 +20,10 @@
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-native-network-info": "^3.0.0",
     "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.12",
+    "react-navigation": "^1.0.0-beta.19",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-persist": "^5.4.0",
-    "redux-persist-transform-filter": "0.0.16",
     "redux-thunk": "^2.2.0",
     "remote-redux-devtools": "^0.5.12",
     "wordwrap": "^1.0.0"

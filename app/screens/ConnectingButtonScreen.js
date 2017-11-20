@@ -23,34 +23,31 @@ var wifi = require("react-native-android-wifi");
 import * as actions from "../actions";
 import { createFormRequest } from "../services/utils";
 
+// tabBarLabel: "Setup",
+// headerLeft: null,
+// headerTitle: "Button Setup",
+// headerTintColor: "white",
+// headerStyle: {
+//   backgroundColor: "#0C6A9B",
+//   height: Platform.OS === "ios" ? 60 : 80,
+//   paddingTop: 20
+// }
+
 class ConnectingButtonScreen extends React.Component {
   static navigationOptions = {
-    tabBarLabel: "Setup",
-    headerTitle: "Button Setup",
-    headerTintColor: "white",
-    headerStyle: {
-      backgroundColor: "#0C6A9B",
-      height: Platform.OS === "ios" ? 60 : 80,
-      paddingTop: 20
-    }
+    header: null
   };
-
-  state = {
-    fakeLoading: false
-  }
 
   async componentDidMount() {
     try {
       if (Platform.OS === "android") {
-        await this.props.requestConfigureButton();
-        this.setState({ fakeLoading: true })
+        await this.props.requestConfigureButton();        
         wifi.findAndConnect(
           this.props.networkCredentials.network,
           this.props.networkCredentials.password,
           found => {
             if (found) {
-              setTimeout(() => {
-                this.setState({ fakeLoading: false })
+              setTimeout(() => {                
                 this.props.requestProvisioning(
                   this.props.button.currentButton._id
                 );
@@ -64,9 +61,7 @@ class ConnectingButtonScreen extends React.Component {
 
       if (Platform.OS === "ios") {
         await this.props.requestConfigureButton();
-        this.setState({ fakeLoading: true })
         setTimeout(() => {
-          this.setState({ fakeLoading: false })
           this.props.requestProvisioning(
             this.props.button.currentButton._id
           );
@@ -78,11 +73,13 @@ class ConnectingButtonScreen extends React.Component {
     }
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { buttonConfig, buttonProvisioning } = nextProps;
     if (nextProps && buttonConfig && buttonProvisioning) {
       if (buttonConfig.status === 200 && buttonProvisioning.status === 200) {
         this.props.navigation.navigate("thankyou");
+      } else {
+        this.props.navigation.navigate("ConnectionFailure");
       }
     }
   }
@@ -90,12 +87,13 @@ class ConnectingButtonScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar translucent backgroundColor="#0D4969" />
         <Text style={{ textAlign: "center" }}>
           <Text style={styles.bold}>Connecting to{"\n"} </Text>
           <Text style={styles.bold}>your Button...{"\n"} </Text>
           <Text style={styles.bold}>Do not close the app{"\n"} </Text>
-        </Text>
-        {(this.props.isFetching || this.state.fakeLoading) && (<ActivityIndicator size="large" color="#0C6A9B" />)}
+          <Text style={styles.loading}>...</Text>
+        </Text>        
       </View>
     );
   }
@@ -104,8 +102,7 @@ class ConnectingButtonScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     networkCredentials: state.setup.networkCredentials,
-    button: state.button,
-    isFetching: state.button.isFetching,
+    button: state.button,    
     buttonConfig: state.button.status,
     buttonProvisioning: state.button.provisioning,
     setup: state.setup

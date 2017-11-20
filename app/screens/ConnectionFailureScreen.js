@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Platform, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Platform, Image, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
+import { NavigationActions } from "react-navigation";
 import Layout from '../constants/Layout';
 
 export default class ConnectionFailureScreen extends React.Component {
   static navigationOptions = {
-    headerTitle: 'Setup Completed',
+    headerTitle: 'Setup Failed',
     headerTintColor: 'white',
     headerLeft: null,
     headerStyle: {
@@ -15,9 +16,18 @@ export default class ConnectionFailureScreen extends React.Component {
     },
   };
 
+  _resetNavigation() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "list" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar translucent backgroundColor="#0D4969" />
         <Text style={{ textAlign: 'center' }}>
           <Text style={styles.bold}>Connection Failed{"\n"} </Text>
           <Text style={styles.content}>Please check your internet connection{"\n"}</Text>
@@ -25,8 +35,8 @@ export default class ConnectionFailureScreen extends React.Component {
 
         <View style={{ width: Layout.window.width, paddingHorizontal: 16 }}>
           <Button
-						onPress={() => this.props.navigation.navigate('saveCredentials')}
-            title="Retry"
+						onPress={() => this._resetNavigation()}
+            title="RETRY"
             buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised
           />
