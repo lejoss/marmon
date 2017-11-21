@@ -270,20 +270,6 @@
 			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
 			remoteInfo = "double-conversion-tvOS";
 		};
-		AD52862D1FB37A2200D016F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9936F3131F5F2E4B0010BF04;
-			remoteInfo = privatedata;
-		};
-		AD52862F1FB37A2200D016F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
-			remoteInfo = "privatedata-tvOS";
-		};
 		AD780AD11FB37F210019B4D0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4276D747CB4C4A919E41B7C1 /* RNNetworkInfo.xcodeproj */;
@@ -535,8 +521,6 @@
 				AD5286281FB37A2200D016F1 /* libthird-party.a */,
 				AD52862A1FB37A2200D016F1 /* libdouble-conversion.a */,
 				AD52862C1FB37A2200D016F1 /* libdouble-conversion.a */,
-				AD52862E1FB37A2200D016F1 /* libprivatedata.a */,
-				AD5286301FB37A2200D016F1 /* libprivatedata-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -758,7 +742,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = KQPE5FEGYH;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1054,20 +1038,6 @@
 			remoteRef = AD52862B1FB37A2200D016F1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		AD52862E1FB37A2200D016F1 /* libprivatedata.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libprivatedata.a;
-			remoteRef = AD52862D1FB37A2200D016F1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AD5286301FB37A2200D016F1 /* libprivatedata-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libprivatedata-tvOS.a";
-			remoteRef = AD52862F1FB37A2200D016F1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		AD780AD21FB37F210019B4D0 /* libRNNetworkInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1315,8 +1285,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-4";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = KQPE5FEGYH;
@@ -1334,7 +1304,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marmon.keystone;
 				PRODUCT_NAME = app;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "34761c79-51c4-4e38-a4e7-be388e776bf8";
+				PROVISIONING_PROFILE_SPECIFIER = "marmon-profile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1345,8 +1316,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-4";
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KQPE5FEGYH;
 				HEADER_SEARCH_PATHS = (
@@ -1363,8 +1334,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marmon.keystone;
 				PRODUCT_NAME = app;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "34761c79-51c4-4e38-a4e7-be388e776bf8";
+				PROVISIONING_PROFILE_SPECIFIER = "marmon-profile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

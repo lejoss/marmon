@@ -76,7 +76,7 @@ class ButtonListScreen extends React.Component {
   renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => this._onSelectButton(item)}>
       <ListItem
-        title={item.name.toUpperCase()}
+        title={item && item.name.toUpperCase()}
         titleStyle={{ fontSize: 18, color: "#5C5B5C" }}
         subtitle={`DSN: ${item.unique_id}`}
         subtitleStyle={{ fontSize: 14, color: "#868686" }}
@@ -131,7 +131,7 @@ class ButtonListScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    buttons: selectFilteredButtons(state),
+    buttons: state.button.buttons,//selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
 };

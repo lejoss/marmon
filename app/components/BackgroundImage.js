@@ -10,7 +10,7 @@ class BackgroundImage extends Component {
 				style={styles.container}
 				resizeMode={'cover'}
       >
-        <KeyboardAwareScrollView style={{ flex: 1, paddingHorizontal: 8, justifyContent: 'center' }}>
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 8 }}>
           {this.props.children}
         </KeyboardAwareScrollView>      
       </ImageBackground>

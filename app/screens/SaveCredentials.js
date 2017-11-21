@@ -79,88 +79,81 @@ class SaveCredentials extends React.Component {
     });
   }
 
-  _connectToButtonAP = async () => {
-    try {
-      const { network, password, buttonSSID } = this.state;
+  _connectToButtonAP = () => {
+    const { network, password, buttonSSID } = this.state;
 
-      // VALIDATE FORM
-      if (network === "" || password === "" || buttonSSID === "") {
-        this.setState({ error: "Please complete the form" });
-        return;
-      }
+    // VALIDATE FORM
+    if (network === "" || password === "" || buttonSSID === "") {
+      this.setState({ error: "Please complete the form" });
+      return;
+    }
 
-      if (Platform.OS == "android") {
-        this.setState({ error: "" });
-        wifi.isEnabled(isEnabled => {
-          if (isEnabled) {
-            const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
-            const _password = this.props.currentButton.unique_id
-              .toUpperCase()
-              .slice(8, 16);
-            wifi.findAndConnect(buttonAPNetwork, _password, found => {
-              if (found) {
-                this.setState({ isDisabled: true, fakeLoading: true });
-                setTimeout(() => {
-                  this.setState({
-                    isDisabled: false,
-                    error: "",
-                    fakeLoading: false
-                  });
-                  this.props.saveNetworkCredentials({
-                    network,
-                    password,
-                    buttonSSID
-                  });
-                  this.props.navigation.navigate("connectingButton");
-                }, 5000);
-              } else {
-                this.setState({ isDisabled: false });
-                Alert.alert("Could not connect to: ", buttonAPNetwork);
-                return;
-              }
-            });
-          } else {
-            this.setState({ isDisabled: false });
-            Alert.alert(
-              "wifi service is disabled, connect to wifi and try again"
-            );
-          }
-        });
-      } else if (Platform.OS === "ios") {
-        this.setState({ error: "" });
-        NetworkInfo.getSSID(ssid => {
-          if (ssid) {
-            if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
+    if (Platform.OS == "android") {
+      this.setState({ error: "" });
+      wifi.isEnabled(isEnabled => {
+        if (isEnabled) {
+          const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
+          const _password = this.props.currentButton.unique_id
+            .toUpperCase()
+            .slice(8, 16);
+          wifi.findAndConnect(buttonAPNetwork, _password, found => {
+            if (found) {
               this.setState({ isDisabled: true, fakeLoading: true });
-              setTimeout(() => {
-                this.setState({
-                  isDisabled: false,
-                  error: "",
-                  fakeLoading: false
-                });
-                this.props.saveNetworkCredentials({
-                  network,
-                  password,
-                  buttonSSID
-                });
+              this.props.saveNetworkCredentials({
+                network,
+                password,
+                buttonSSID
+              });
+              setTimeout(() => {                
                 this.props.navigation.navigate("connectingButton");
-              }, 5000);
+              }, 3000);
             } else {
               this.setState({ isDisabled: false });
-              Alert.alert(
-                "Please connect to ButtonConfigure me before continue."
-              );
+              Alert.alert("Could Not Connect to: ", buttonAPNetwork);
               return;
             }
+          });
+        } else {
+          this.setState({ isDisabled: false });
+          Alert.alert(
+            "wifi service is disabled, connect to wifi and try again"
+          );
+        }
+      });
+    } else if (Platform.OS === "ios") {
+      this.setState({ error: "" });
+      NetworkInfo.getSSID(ssid => {
+        if (ssid) {
+          if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
+            this.setState({ isDisabled: true, fakeLoading: true });
+            setTimeout(() => {
+              this.setState({
+                isDisabled: false,
+                error: "",
+                fakeLoading: false
+              });
+              this.props.saveNetworkCredentials({
+                network,
+                password,
+                buttonSSID
+              });
+              this.props.navigation.navigate("connectingButton");
+            }, 5000);
           } else {
             this.setState({ isDisabled: false });
             Alert.alert(
-              "wifi service is disabled, connect to wifi and try again"
+              "Please connect to ButtonConfigure me before continue."
             );
+            return;
           }
-        });
-      }
-    } catch (err) {}
+        } else {
+          this.setState({ isDisabled: false });
+          Alert.alert(
+            "wifi service is disabled, connect to wifi and try again"
+          );
+        }
+      });
+    }
   };
 
   render() {
@@ -170,7 +163,7 @@ class SaveCredentials extends React.Component {
         <View style={styles.container}>
           <View
             style={{
-              flex: 2,              
+              flex: 2
             }}
           >
             <Text
@@ -242,10 +235,9 @@ class SaveCredentials extends React.Component {
           </View>
           <View
             style={{
-              flex: 1         
+              flex: 1
             }}
-          >       
-            <View style={{ paddingBottom: 25 }}/>
+          >
             <Button
               buttonStyle={{
                 backgroundColor: "#0C6A9B"
@@ -276,7 +268,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: Layout.window.height,
-    backgroundColor: '#fff',
-    paddingHorizontal: 8,
+    backgroundColor: "#fff",
+    paddingHorizontal: 8
   }
 });

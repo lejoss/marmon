@@ -78,7 +78,7 @@ class LoginScreen extends React.Component {
     const isIOS = Platform.OS === "ios" ? true : false; //{...isIOS ? { behavior: 'padding' } : {} }
     return (
       <BackgroundImage>
-          <View style={{ flex: 3, justifyContent: "flex-end" }}>
+          <View style={{ flex: 2, justifyContent: "flex-end" }}>
             <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
               Email or Username
             </FormLabel>
