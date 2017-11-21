@@ -1,69 +1,82 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, ScrollView, StatusBar, Linking } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
-import Layout from '../constants/Layout';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  ScrollView
+} from "react-native";
+import { Button, Icon } from "react-native-elements";
+import Layout from "../constants/Layout";
 
+const data = [
+  {
+    key: "1",
+    text: "Press the home button on your iPhone."
+  },
+  {
+    key: "2",
+    text: "Open iPhone Settings select Wifi."
+  },
+  {
+    key: "3",
+    text: "Select Button."
+  },
+  {
+    key: "4",
+    text:
+      "Password is the last 8 characters of the device serial number (DSN). You'll find the DSN on the back of the device.."
+  },
+  {
+    key: "5",
+    text: "Remember the last 3 characters from the Button ConfigureMe Network."
+  },
+  {
+    key: "6",
+    text: "Return to Marmon App and Continue."
+  }
+];
 
 export default class IOSConnectButtonSteps extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Setup',
+    tabBarLabel: "Setup",
     headerTitle: `Button Setup`,
-    headerTintColor: 'white',
+    headerTintColor: "white",
     headerStyle: {
-      backgroundColor: '#0C6A9B',
-      height: Platform.OS === 'ios' ? 60 : 80,
-      paddingTop: 20,
-    },
-	};
-	
-	_openSettings() {
-    Linking.openURL('app-settings:');
-  }
+      backgroundColor: "#0C6A9B",
+      height: Platform.OS === "ios" ? 60 : 80,
+      paddingTop: 20
+    }
+  };
 
   componentWillMount() {
-    if (Platform.OS === 'android') {
-      this.props.navigation.navigate('saveCredentials')
+    if (Platform.OS === "android") {
+      this.props.navigation.navigate("saveCredentials");
     }
   }
 
   render() {
-    const iconName = Platform.OS === 'ios' ? 'ios-arrow-round-forward' : 'md-arrow-forward';
     return (
-      <ScrollView style={styles.container}>
-        <View style={{ flex: 2, paddingTop: 20 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={{ flex: 2 }}>
           <Text
             style={{
               fontSize: 18,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#868686',
-              paddingBottom: 20
+              fontWeight: "bold",
+              textAlign: "center",
+              color: "#868686",
+              paddingVertical: 20
             }}
           >
             Connect to your Buttons's Wi-Fi
           </Text>
-          <View style={{ paddingHorizontal: 8 }}>
-            <Text style={styles.text}>1. Press the home button on your iPhone.</Text>
-            <Text style={styles.text}>
-              2. Open{' '}
-                iPhone{' '}
-								Settings{' '}
-								select Wi-Fi.
-            </Text>
-            <Text style={styles.text}>
-              3. Select Button{' '}
-              <Text style={styles.text}>ConfigureMe - XXX Network.</Text>
-            </Text>
-            <Text style={styles.text}>4. Password is the last 8 characters of the device serial number (DSN). You'll find the DSN on the back of the device. </Text>
-            <Text style={styles.text}>5. Remember the last 3 characters from the Button ConfigureMe Network.</Text>
-            <Text style={styles.text}>6. Return to Marmon App and Continue.</Text>
-          </View>
+          <BulletList data={data} />
         </View>
-        <View style={{ flex: 1, paddingTop: 20, paddingBottom: 40 }}>          
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           <Button
-            onPress={() => this.props.navigation.navigate('saveCredentials')}
+            onPress={() => this.props.navigation.navigate("saveCredentials")}
             title="NEXT"
-            buttonStyle={{ backgroundColor: '#0C6A9B' }}
+            buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised
           />
         </View>
@@ -72,15 +85,31 @@ export default class IOSConnectButtonSteps extends Component {
   }
 }
 
+const BulletList = props => {
+  const toRender = props.data.map(i => {
+    return (
+      <View style={{ paddingHorizontal: 8, flexDirection: "row" }}>
+        <View style={{ width: 20 }}>
+          <Text style={styles.text}>{i.key}</Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.text}>{i.text}</Text>
+        </View>
+      </View>
+    );
+  });
+  return <View style={{ flex: 1 }}>{toRender}</View>;
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 8,
+    backgroundColor: "#fff",
+    paddingHorizontal: 8
   },
   text: {
     paddingHorizontal: 8,
     paddingBottom: 5,
-    color: '#868686'
+    color: "#868686"
   }
 });

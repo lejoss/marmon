@@ -242,9 +242,10 @@ class SaveCredentials extends React.Component {
           </View>
           <View
             style={{
-              flex: 1,              
+              flex: 1         
             }}
-          >            
+          >       
+            <View style={{ paddingBottom: 25 }}/>
             <Button
               buttonStyle={{
                 backgroundColor: "#0C6A9B"
