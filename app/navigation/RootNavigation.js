@@ -23,7 +23,7 @@ const RootStackNavigator = StackNavigator(
     saveCredentials: {
       screen: SaveCredentials,
     },
-    iosSteps: {
+    steps: {
       screen: IOSConnectButtonSteps,
     },
     connectingButton: {

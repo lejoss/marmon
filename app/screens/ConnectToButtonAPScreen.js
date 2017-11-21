@@ -29,13 +29,7 @@ export default class ConnectToButtonAPScreen extends React.Component {
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Button
-            onPress={() => {
-              if (Platform.OS === 'android') {
-                this.props.navigation.navigate('saveCredentials')
-              } else {
-                this.props.navigation.navigate('iosSteps')
-              }
-            }}
+            onPress={() => this.props.navigation.navigate('steps')}
             title="NEXT"
             buttonStyle={{ backgroundColor: '#0C6A9B' }}
             raised

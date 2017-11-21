@@ -88,7 +88,7 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 		const response = await axios.post(url, body, config);		
     dispatch(requestConfigureButtonSuccess(response));
 	} catch (err) {
-		dispatch(requestConfigureButtonFailure(err.response.status));
+		dispatch(requestConfigureButtonFailure(err));
 	}
 }
 
@@ -100,7 +100,7 @@ export const requestProvisioning = (buttonId) => async (dispatch, getState) => {
 		const response = await axios.put(url, {}, { headers: { Authorization: `Basic ${token}` } });
 		dispatch(requestProvisioningSuccess(response));
 	} catch (err) {
-		dispatch(requestProvisioningFailure(err.response.status));
+		dispatch(requestProvisioningFailure(err));
 	}
 }
 

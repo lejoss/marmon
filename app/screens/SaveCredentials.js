@@ -13,8 +13,7 @@ import {
   Linking,
   StatusBar,
   Alert,
-  KeyboardAvoidingView,
-  ActivityIndicator
+  KeyboardAvoidingView
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NetworkInfo } from "react-native-network-info";
@@ -22,8 +21,6 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import * as actions from "../actions";
 import Layout from "../constants/Layout";
-
-var wifi = require("react-native-android-wifi");
 
 class SaveCredentials extends React.Component {
   static navigationOptions = {
@@ -46,7 +43,6 @@ class SaveCredentials extends React.Component {
       buttonSSID: "",
       isDisabled: false,
       error: "",
-      fakeLoading: false
     };
   }
 
@@ -71,93 +67,41 @@ class SaveCredentials extends React.Component {
   componentWillUnmount() {
     this.setState({
       network: "",
-      password: "",
-      buttonSSID: "",
+      password: "",      
       isDisabled: false,
-      error: "",
-      fakeLoading: false
+      error: ""
     });
   }
 
   _connectToButtonAP = () => {
-    const { network, password, buttonSSID } = this.state;
-
-    // VALIDATE FORM
-    if (network === "" || password === "" || buttonSSID === "") {
+    const { network, password } = this.state;
+    if (network === "" || password === "") {
       this.setState({ error: "Please complete the form" });
       return;
     }
 
-    if (Platform.OS == "android") {
-      this.setState({ error: "" });
-      wifi.isEnabled(isEnabled => {
-        if (isEnabled) {
-          const buttonAPNetwork = `Button ConfigureMe - ${buttonSSID}`;
-          const _password = this.props.currentButton.unique_id
-            .toUpperCase()
-            .slice(8, 16);
-          wifi.findAndConnect(buttonAPNetwork, _password, found => {
-            if (found) {
-              this.setState({ isDisabled: true, fakeLoading: true });
-              this.props.saveNetworkCredentials({
-                network,
-                password,
-                buttonSSID
-              });
-              setTimeout(() => {                
-                this.props.navigation.navigate("connectingButton");
-              }, 3000);
-            } else {
-              this.setState({ isDisabled: false });
-              Alert.alert("Could Not Connect to: ", buttonAPNetwork);
-              return;
-            }
+    NetworkInfo.getSSID(ssid => {
+      if (ssid) {
+        if (ssid.startsWith('Button ConfigureMe')) {
+          this.setState({ isDisabled: true, error: "" });
+          this.props.saveNetworkCredentials({
+            network,
+            password
           });
+          this.props.navigation.navigate("connectingButton");
         } else {
           this.setState({ isDisabled: false });
           Alert.alert(
-            "wifi service is disabled, connect to wifi and try again"
+            "Please connect to ButtonConfigure me."
           );
+          return;
         }
-      });
-    } else if (Platform.OS === "ios") {
-      this.setState({ error: "" });
-      NetworkInfo.getSSID(ssid => {
-        if (ssid) {
-          if (ssid === `Button ConfigureMe - ${buttonSSID}`) {
-            this.setState({ isDisabled: true, fakeLoading: true });
-            setTimeout(() => {
-              this.setState({
-                isDisabled: false,
-                error: "",
-                fakeLoading: false
-              });
-              this.props.saveNetworkCredentials({
-                network,
-                password,
-                buttonSSID
-              });
-              this.props.navigation.navigate("connectingButton");
-            }, 5000);
-          } else {
-            this.setState({ isDisabled: false });
-            Alert.alert(
-              "Please connect to ButtonConfigure me before continue."
-            );
-            return;
-          }
-        } else {
-          this.setState({ isDisabled: false });
-          Alert.alert(
-            "wifi service is disabled, connect to wifi and try again"
-          );
-        }
-      });
-    }
+      } 
+    });
   };
 
   render() {
-    const { network, password, buttonSSID, isDisabled } = this.state;
+    const { network, password, isDisabled } = this.state;
     return (
       <KeyboardAwareScrollView>
         <View style={styles.container}>
@@ -198,25 +142,10 @@ class SaveCredentials extends React.Component {
               value={password}
               onChangeText={password => this.setState({ password })}
               autoCapitalize="none"
-              returnKeyType="next"
-              autoCorrect={false}
-              inputStyle={{ paddingLeft: 5 }}
-              onSubmitEditing={() => this.buttonSSID.focus()}
-              ref={input => (this.passwordInput = input)}
-            />
-            <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
-              Last 3 characters of Button ConfigureMe
-            </FormLabel>
-            <FormInput
-              underlineColorAndroid="#0C6A9B"
-              value={buttonSSID && buttonSSID.toUpperCase()}
-              onChangeText={buttonSSID => this.setState({ buttonSSID })}
-              autoCapitalize="none"
               returnKeyType="go"
-              maxLength={3}
               autoCorrect={false}
               inputStyle={{ paddingLeft: 5 }}
-              ref={input => (this.buttonSSID = input)}
+              ref={input => (this.passwordInput = input)}
             />
             <Text
               style={{
@@ -229,9 +158,6 @@ class SaveCredentials extends React.Component {
             >
               {this.state.error && this.state.error}
             </Text>
-            {this.state.fakeLoading && (
-              <ActivityIndicator size="large" color="#0C6A9B" />
-            )}
           </View>
           <View
             style={{

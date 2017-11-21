@@ -76,12 +76,11 @@ class ButtonListScreen extends React.Component {
   renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => this._onSelectButton(item)}>
       <ListItem
-        title={item && item.name.toUpperCase()}
+        title={item.name && item.name.toUpperCase()}
         titleStyle={{ fontSize: 18, color: "#5C5B5C" }}
         subtitle={`DSN: ${item.unique_id}`}
-        subtitleStyle={{ fontSize: 14, color: "#868686" }}
-        rightIcon={{ style: { display: "none" } }}
-        containerStyle={{ borderBottomWidth: 0, height: 80 }}
+        subtitleStyle={{ fontSize: 14, color: "#868686", opacity: 0.7 }}
+        containerStyle={{ borderBottomWidth: 0, height: 65 }}
       />
     </TouchableOpacity>
   );
@@ -97,6 +96,18 @@ class ButtonListScreen extends React.Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
+
+  _renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  };
 
   render() {
     return (
@@ -120,6 +131,7 @@ class ButtonListScreen extends React.Component {
               data={this.props.buttons}
               renderItem={this.renderItem}
               keyExtractor={item => item._id}
+              ItemSeparatorComponent={this._renderSeparator}
             />
           </List>
         )}

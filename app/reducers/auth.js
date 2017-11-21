@@ -37,7 +37,7 @@ export default function auth(state = initialState, action) {
         ...state,
         isAuthenticated: false,
         isFetching: false,
-        error: "Invalid Username or Password"
+        error: " Invalid username / password or connection lost"
       };
     default:
       return state;

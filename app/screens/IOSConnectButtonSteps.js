@@ -25,14 +25,10 @@ const data = [
   {
     key: "4",
     text:
-      "Password is the last 8 characters of the device serial number (DSN). You'll find the DSN on the back of the device.."
+      "Password is the last 8 characters of the device serial number (DSN). You'll find the DSN on the back of the device."
   },
   {
     key: "5",
-    text: "Remember the last 3 characters from the Button ConfigureMe Network."
-  },
-  {
-    key: "6",
     text: "Return to Marmon App and Continue."
   }
 ];
@@ -48,12 +44,6 @@ export default class IOSConnectButtonSteps extends Component {
       paddingTop: 20
     }
   };
-
-  componentWillMount() {
-    if (Platform.OS === "android") {
-      this.props.navigation.navigate("saveCredentials");
-    }
-  }
 
   render() {
     return (
@@ -88,8 +78,8 @@ export default class IOSConnectButtonSteps extends Component {
 const BulletList = props => {
   const toRender = props.data.map(i => {
     return (
-      <View style={{ paddingHorizontal: 8, flexDirection: "row" }}>
-        <View style={{ width: 20 }}>
+      <View key={i.key} style={{ paddingHorizontal: 8, flexDirection: "row" }}>
+        <View style={{ width: 30 }}>
           <Text style={styles.text}>{i.key}</Text>
         </View>
         <View style={{ flex: 1 }}>
