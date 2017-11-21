@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Image, StyleSheet, ImageBackground } from "react-native";
+import { Image, StyleSheet, ImageBackground, KeyboardAvoidingView } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class BackgroundImage extends Component {
   render() {
@@ -9,7 +10,9 @@ class BackgroundImage extends Component {
 				style={styles.container}
 				resizeMode={'cover'}
       >
-        {this.props.children}
+        <KeyboardAwareScrollView style={{ flex: 1, paddingHorizontal: 8, justifyContent: 'center' }}>
+          {this.props.children}
+        </KeyboardAwareScrollView>      
       </ImageBackground>
     );
   }

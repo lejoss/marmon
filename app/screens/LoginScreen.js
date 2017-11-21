@@ -11,6 +11,7 @@ import {
   View,
   Platform,
   Linking,
+  ScrollView,
   KeyboardAvoidingView,
   AsyncStorage
 } from "react-native";
@@ -40,14 +41,14 @@ class LoginScreen extends React.Component {
       this.setState({
         email: loginCreds.email,
         password: loginCreds.password
-      })
+      });
     }
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps && nextProps.isAuthenticated) { 
-      this._resetNavigation();      
-     }
+    if (nextProps && nextProps.isAuthenticated) {
+      this._resetNavigation();
+    }
   }
 
   _resetNavigation() {
@@ -68,17 +69,16 @@ class LoginScreen extends React.Component {
   _onSubmit = () => {
     const { email, password } = this.state;
     const { login } = this.props;
-    if (email !== "" || password !== "") {      
+    if (email !== "" || password !== "") {
       login(this.state);
-    } 
+    }
   };
 
   render() {
     const isIOS = Platform.OS === "ios" ? true : false; //{...isIOS ? { behavior: 'padding' } : {} }
     return (
       <BackgroundImage>
-        <KeyboardAvoidingView   style={styles.container}>
-          <View style={{ flex: 2, justifyContent: "flex-end" }}>
+          <View style={{ flex: 3, justifyContent: "flex-end" }}>
             <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
               Email or Username
             </FormLabel>
@@ -103,7 +103,7 @@ class LoginScreen extends React.Component {
               autoCapitalize="none"
               returnKeyType="go"
               autoCorrect={false}
-              inputStyle={{ paddingLeft: 5, backgroundColor: 'transparent' }}
+              inputStyle={{ paddingLeft: 5, backgroundColor: "transparent" }}
               secureTextEntry
               ref={input => (this.passwordInput = input)}
             />
@@ -143,7 +143,6 @@ class LoginScreen extends React.Component {
               onPress={this._onSubmit}
             />
           </View>
-        </KeyboardAvoidingView>
       </BackgroundImage>
     );
   }

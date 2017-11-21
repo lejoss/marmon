@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Platform, Image, WebView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Platform, Image, WebView, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import Layout from '../constants/Layout';
 
@@ -18,8 +18,8 @@ export default class ConnectToButtonAPScreen extends React.Component {
   render() {    
     return (
       <View style={styles.container}>
-        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center', paddingTop: 20  }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, textAlign: 'center', color: '#868686', paddingHorizontal: 5, paddingBottom: 20 }}>
+        <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center', paddingTop: 20  }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, textAlign: 'center', color: '#868686', paddingBottom: 20 }}>
             Press and hold your Button for up to 6 seconds, until the light flashes blue, then tap Next
           </Text>
           <Image
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingHorizontal: 8,
   },
   bold: {
     fontWeight: 'bold',

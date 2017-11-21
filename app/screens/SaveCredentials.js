@@ -170,8 +170,7 @@ class SaveCredentials extends React.Component {
         <View style={styles.container}>
           <View
             style={{
-              flex: 3,
-              justifyContent: "center",
+              flex: 2,              
             }}
           >
             <Text
@@ -276,6 +275,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: Layout.window.height,
-    backgroundColor: '#fff' 
+    backgroundColor: '#fff',
+    paddingHorizontal: 8,
   }
 });
