@@ -6,17 +6,16 @@ import {
   Platform,
   ScrollView
 } from "react-native";
-import { Button, Icon } from "react-native-elements";
-import Layout from "../constants/Layout";
+import { Button } from "react-native-elements";
 
 const data = [
   {
     key: "1",
-    text: "Press the home button on your iPhone."
+    text: "Press the home button on your smartphone."
   },
   {
     key: "2",
-    text: "Open iPhone Settings select Wifi."
+    text: "Open Smartphone Settings select Wifi."
   },
   {
     key: "3",

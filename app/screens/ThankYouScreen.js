@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Platform, Image, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { Button } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
-import Layout from '../constants/Layout';
 
 export default class ThankYouScreen extends React.Component {
   static navigationOptions = {
@@ -29,7 +28,7 @@ export default class ThankYouScreen extends React.Component {
             <Text style={styles.bold}>Thank You!</Text>
           </Text>
         </View>
-        <View style={{ flex: 1, width: Layout.window.width, paddingHorizontal: 16, justifyContent: 'center'  }}>
+        <View style={{ flex: 1, paddingHorizontal: 16, justifyContent: 'center'  }}>
           <Button
 						onPress={() => this._resetNavigation()}
             title="BACK TO BUTTON LIST"

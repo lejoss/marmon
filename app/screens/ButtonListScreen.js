@@ -13,7 +13,6 @@ import {
   Platform,
   TouchableOpacity,
   ActivityIndicator,
-  StatusBar,
   Alert
 } from "react-native";
 import * as actions from "../actions";
@@ -22,7 +21,7 @@ class ButtonListScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      headerTitle: "Select Button",
+      headerTitle: "Select Button (Look on Back for DSN)",
       headerLeft: null,
       headerTintColor: "white",
       headerRight: (
@@ -31,7 +30,7 @@ class ButtonListScreen extends React.Component {
             name={Platform.OS === "ios" ? "ios-log-out" : "md-log-out"}
             size={28}
             color="#fff"
-            style={{ paddingRight: 20 }}
+            style={{ paddingRight: 10 }}
           />
         </TouchableOpacity>
       ),
@@ -47,7 +46,7 @@ class ButtonListScreen extends React.Component {
     this.props.navigation.setParams({ logout: this._logout.bind(this) }); 
   }
 
-  async componentDidMount() {
+  async componentDidMount() {  
     try {      
       await Promise.all([
         this.props.requestGatewayDataSources(),

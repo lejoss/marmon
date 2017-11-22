@@ -3,33 +3,14 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Platform,
-  Image,
-  WebView,
   StatusBar,
   NetInfo,
-  Alert,
-  AsyncStorage,
   ActivityIndicator
 } from "react-native";
 import { NetworkInfo } from "react-native-network-info";
-import { Button } from "react-native-elements";
 import { connect } from "react-redux";
-import axios from "axios";
 
 import * as actions from "../actions";
-import { createFormRequest } from "../services/utils";
-
-// tabBarLabel: "Setup",
-// headerLeft: null,
-// headerTitle: "Button Setup",
-// headerTintColor: "white",
-// headerStyle: {
-//   backgroundColor: "#0C6A9B",
-//   height: Platform.OS === "ios" ? 60 : 80,
-//   paddingTop: 20
-// }
 
 class ConnectingButtonScreen extends React.Component {
   static navigationOptions = {
@@ -38,46 +19,54 @@ class ConnectingButtonScreen extends React.Component {
 
   state = {
     loading: true
+  };
+
+  componentWillMount() {
+    this.props.requestConfigureButton(); 
   }
 
-  async componentWillMount() {
-    try {
-      await this.props.requestConfigureButton();
-      NetInfo.addEventListener(
-        'connectionChange',
-        this._requestProvisioning.bind(this)
-      );    
-    } catch (error) {
+  componentDidMount() {
+    NetInfo.addEventListener(
+      "connectionChange",
+      this._requestProvisioning.bind(this)
+    );
+  }
+
+  componentWillUpdate(nextProps) {
+    const { buttonConfigStatus, buttonProvisioningStatus } = nextProps;
+    if (buttonConfigStatus === 0) {
+      this.props.navigation.navigate("ConnectionFailure");
     }
-  }
 
-  _requestProvisioning() {
-    const { button: { currentButton }, networkCredentials } = this.props;
-      NetworkInfo.getSSID(network => {
-        if (currentButton && network) {
-          if (network === networkCredentials.network) {
-            this.props.requestProvisioning(currentButton._id);
-          } else return;
-        }
-      })     
-      NetInfo.removeEventListener(
-        'connectionChange',
-        this._requestProvisioning.bind(this)
-      ); 
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { buttonConfig, buttonProvisioning } = nextProps;
-    if (nextProps && buttonConfig && buttonProvisioning) {
-      if (buttonConfig.status === 200 && buttonProvisioning.status === 200) {
-        this.setState({ loading: false })
-        
-        this.props.navigation.navigate("thankyou");
-      } else if (buttonConfig.status !== 200 || buttonProvisioning.status !== 200) {
+    if (buttonConfigStatus && buttonProvisioningStatus) {
+      if (buttonConfigStatus === 200 && buttonProvisioningStatus === 200) {
+        this.props.navigation.navigate("thankyou"); 
+      } else if (buttonConfigStatus === 200 && buttonProvisioningStatus === 0) {
         this.props.navigation.navigate("ConnectionFailure");
       }
     }
   }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this._requestProvisioning.bind(this)
+    ); 
+  }
+
+  async _requestProvisioning() {
+    try {
+      const { button: { currentButton }, networkCredentials, buttonConfigStatus } = this.props;
+      const { type } = await NetInfo.getConnectionInfo();
+      if ((type === 'wifi') && (buttonConfigStatus === 200)) {
+        setTimeout(() => {
+          this.props.requestProvisioning(currentButton._id);
+        }, 1000)
+      }
+    } catch (err) {}
+  }
+
+  
 
   render() {
     return (
@@ -86,11 +75,13 @@ class ConnectingButtonScreen extends React.Component {
         <Text style={{ textAlign: "center" }}>
           <Text style={styles.bold}>Connecting to{"\n"} </Text>
           <Text style={styles.bold}>your Button...{"\n"} </Text>
-          <Text style={styles.bold}>Do not close the app{"\n"} </Text>          
-        </Text>      
+          <Text style={styles.bold}>Do not close the app{"\n"} </Text>
+        </Text>
         <View>
-          {(this.props.button.isFetching || this.state.loading) && <ActivityIndicator size="large" color="#0C6A9B" />}  
-        </View>  
+          {this.state.loading && (
+            <ActivityIndicator size="large" color="#0C6A9B" />
+          )}
+        </View>
       </View>
     );
   }
@@ -99,10 +90,9 @@ class ConnectingButtonScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     networkCredentials: state.setup.networkCredentials,
-    button: state.button,    
-    buttonConfig: state.button.status,
-    buttonProvisioning: state.button.provisioning,
-    setup: state.setup
+    button: state.button,
+    buttonConfigStatus: state.button.status,
+    buttonProvisioningStatus: state.button.provisioning
   };
 };
 

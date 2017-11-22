@@ -85,10 +85,10 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 		const dsn = button.currentButton.unique_id;
 		const body = createFormRequest({ button, setup }, dsn);
 
-		const response = await axios.post(url, body, config);		
-    dispatch(requestConfigureButtonSuccess(response));
+		const response = await axios.post(url, body, config);
+    dispatch(requestConfigureButtonSuccess(response.status));
 	} catch (err) {
-		dispatch(requestConfigureButtonFailure(err));
+		dispatch(requestConfigureButtonFailure(err.request.status));
 	}
 }
 
@@ -98,9 +98,9 @@ export const requestProvisioning = (buttonId) => async (dispatch, getState) => {
     const { auth: { token } } = getState();
 		const url = `http://stage.services.machineshop.io/api/v1/platform/gateway_data_sources/${buttonId}/provision_marmon_button`;
 		const response = await axios.put(url, {}, { headers: { Authorization: `Basic ${token}` } });
-		dispatch(requestProvisioningSuccess(response));
+		dispatch(requestProvisioningSuccess(response.status));
 	} catch (err) {
-		dispatch(requestProvisioningFailure(err));
+		dispatch(requestProvisioningFailure(err.request.status));
 	}
 }
 

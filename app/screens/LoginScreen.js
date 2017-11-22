@@ -11,16 +11,11 @@ import {
   View,
   Platform,
   Linking,
-  ScrollView,
-  KeyboardAvoidingView,
-  AsyncStorage
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import BackgroundImage from "../components/BackgroundImage";
 import * as actions from "../actions";
-import auth from "../reducers/auth";
 
 class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -78,71 +73,71 @@ class LoginScreen extends React.Component {
     const isIOS = Platform.OS === "ios" ? true : false; //{...isIOS ? { behavior: 'padding' } : {} }
     return (
       <BackgroundImage>
-          <View style={{ flex: 2, justifyContent: "flex-end" }}>
-            <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
-              Email or Username
-            </FormLabel>
-            <FormInput
-              underlineColorAndroid="#0C6A9B"
-              value={this.state.email}
-              onChangeText={email => this.setState({ email })}
-              autoCapitalize="none"
-              returnKeyType="next"
-              inputStyle={{ paddingLeft: 5 }}
-              autoCorrect={false}
-              keyboardType="email-address"
-              onSubmitEditing={() => this.passwordInput.focus()}
-            />
-            <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
-              Password
-            </FormLabel>
-            <FormInput
-              underlineColorAndroid="#0C6A9B"
-              value={this.state.password}
-              onChangeText={password => this.setState({ password })}
-              autoCapitalize="none"
-              returnKeyType="go"
-              autoCorrect={false}
-              inputStyle={{ paddingLeft: 5, backgroundColor: "transparent" }}
-              secureTextEntry
-              ref={input => (this.passwordInput = input)}
-            />
-            <View>
-              <Text
-                style={{
-                  fontSize: 12,
-                  paddingLeft: 20,
-                  color: "red",
-                  backgroundColor: "transparent",
-                  paddingTop: 20
-                }}
-              >
-                {this.props.error}
-              </Text>
-            </View>
-          </View>
-          <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={{ flex: 2, justifyContent: "flex-end" }}>
+          <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
+            Email or Username
+          </FormLabel>
+          <FormInput
+            underlineColorAndroid="#0C6A9B"
+            value={this.state.email}
+            onChangeText={email => this.setState({ email })}
+            autoCapitalize="none"
+            returnKeyType="next"
+            inputStyle={{ paddingLeft: 5 }}
+            autoCorrect={false}
+            keyboardType="email-address"
+            onSubmitEditing={() => this.passwordInput.focus()}
+          />
+          <FormLabel labelStyle={{ backgroundColor: "transparent" }}>
+            Password
+          </FormLabel>
+          <FormInput
+            underlineColorAndroid="#0C6A9B"
+            value={this.state.password}
+            onChangeText={password => this.setState({ password })}
+            autoCapitalize="none"
+            returnKeyType="go"
+            autoCorrect={false}
+            inputStyle={{ paddingLeft: 5, backgroundColor: "transparent" }}
+            secureTextEntry
+            ref={input => (this.passwordInput = input)}
+          />
+          <View>
             <Text
-              onPress={this._onTrobleLogin}
               style={{
-                color: "#0C6A9B",
                 fontSize: 12,
-                fontWeight: "bold",
+                paddingLeft: 20,
+                color: "red",
                 backgroundColor: "transparent",
-                paddingBottom: 10,
-                paddingLeft: 16
+                paddingTop: 20
               }}
             >
-              Trouble Logging In?
+              {this.props.error}
             </Text>
-            <Button
-              buttonStyle={{ backgroundColor: "#0C6A9B" }}
-              raised
-              title="LOG IN"
-              disabled={this.props.isFetching}
-              onPress={this._onSubmit}
-            />
           </View>
+        </View>
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Text
+            onPress={this._onTrobleLogin}
+            style={{
+              color: "#0C6A9B",
+              fontSize: 12,
+              fontWeight: "bold",
+              backgroundColor: "transparent",
+              paddingBottom: 10,
+              paddingLeft: 16
+            }}
+          >
+            Trouble Logging In?
+          </Text>
+          <Button
+            buttonStyle={{ backgroundColor: "#0C6A9B" }}
+            raised
+            title="LOG IN"
+            disabled={this.props.isFetching}
+            onPress={this._onSubmit}
+          />
+        </View>
       </BackgroundImage>
     );
   }
