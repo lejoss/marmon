@@ -66,8 +66,6 @@ class ConnectingButtonScreen extends React.Component {
     } catch (err) {}
   }
 
-  
-
   render() {
     return (
       <View style={styles.container}>

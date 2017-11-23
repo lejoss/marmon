@@ -27,9 +27,9 @@ export default class ConnectionFailureScreen extends React.Component {
           <Text style={styles.content}>Please check your internet connection{"\n"}</Text>
         </Text>        
 
-        <View style={{ width: Layout.window.width, paddingHorizontal: 16 }}>
+        <View style={{ width: Layout.window.width, paddingHorizontal: 8 }}>
           <Button
-						onPress={() => this._resetNavigation()}
+            onPress={() => this.props.navigation.navigate('list')}
             title="RETRY"
             buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingHorizontal: 16    
+    paddingHorizontal: 8    
   },
   bold: {
     color: '#868686',

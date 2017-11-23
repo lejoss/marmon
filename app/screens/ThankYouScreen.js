@@ -28,9 +28,9 @@ export default class ThankYouScreen extends React.Component {
             <Text style={styles.bold}>Thank You!</Text>
           </Text>
         </View>
-        <View style={{ flex: 1, paddingHorizontal: 16, justifyContent: 'center'  }}>
+        <View style={{ flex: 1, justifyContent: 'center'  }}>
           <Button
-						onPress={() => this._resetNavigation()}
+						onPress={() => this.props.navigation.navigate('list')}
             title="BACK TO BUTTON LIST"
             buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised
@@ -47,15 +47,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingHorizontal: 16
+    paddingHorizontal: 8
   },
   bold: {
     color: '#868686',
     fontSize: 20,
     fontWeight: 'bold'
-  },
-  loading:{
-    color: '#868686',
-    fontSize: 60,
   }
 });
