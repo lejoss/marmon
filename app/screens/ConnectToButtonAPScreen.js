@@ -1,9 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, Platform, Image } from 'react-native';
 import { Button } from 'react-native-elements';
+import _ from 'lodash';
 import Layout from '../constants/Layout';
 
 export default class ConnectToButtonAPScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.onPressDelayed = _.debounce(this._navigate, 300);
+  }
+
   static navigationOptions = {
     tabBarLabel: 'Setup',
     headerTitle: 'Button Setup',
@@ -14,6 +20,10 @@ export default class ConnectToButtonAPScreen extends React.Component {
       paddingTop: 20,
     },
   };
+
+  _navigate() {    
+    this.props.navigation.navigate('steps')
+  }
 
   render() {    
     return (
@@ -29,7 +39,7 @@ export default class ConnectToButtonAPScreen extends React.Component {
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Button
-            onPress={() => this.props.navigation.navigate('steps')}
+            onPress={this.onPressDelayed.bind(this)}
             title="NEXT"
             buttonStyle={{ backgroundColor: '#0C6A9B' }}
             raised

@@ -140,16 +140,8 @@ class SaveCredentials extends React.Component {
               inputStyle={{ paddingLeft: 5 }}
               ref={input => (this.passwordInput = input)}
             />
-            <Text
-              style={{
-                paddingLeft: 20,
-                paddingTop: 10,
-                color: "tomato",
-                fontWeight: "bold",
-                fontSize: 12
-              }}
-            >
-              {this.state.error && this.state.error}
+            <Text style={styles.error}>
+              {this.state.error}
             </Text>
           </View>
           <View
@@ -189,5 +181,12 @@ const styles = StyleSheet.create({
     height: Layout.window.height,
     backgroundColor: "#fff",
     paddingHorizontal: 8
-  }
+  },
+  error: {
+    fontSize: 12,
+    paddingLeft: 20,
+    color: "red",
+    backgroundColor: "transparent",
+    paddingTop: 20
+  },
 });

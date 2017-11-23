@@ -6,6 +6,7 @@ import {
   Platform,
   ScrollView
 } from "react-native";
+import _ from 'lodash';
 import { Button } from "react-native-elements";
 
 const data = [
@@ -33,6 +34,11 @@ const data = [
 ];
 
 export default class IOSConnectButtonSteps extends Component {
+  constructor(props) {
+    super(props)
+    this.onPressDelayed = _.debounce(this._navigate, 300);
+  }
+
   static navigationOptions = {
     tabBarLabel: "Setup",
     headerTitle: `Button Setup`,
@@ -43,6 +49,10 @@ export default class IOSConnectButtonSteps extends Component {
       paddingTop: 20
     }
   };
+
+  _navigate() {    
+    this.props.navigation.navigate('saveCredentials')
+  }
 
   render() {
     return (
@@ -63,7 +73,7 @@ export default class IOSConnectButtonSteps extends Component {
         </View>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Button
-            onPress={() => this.props.navigation.navigate("saveCredentials")}
+            onPress={this.onPressDelayed.bind(this)}
             title="NEXT"
             buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised

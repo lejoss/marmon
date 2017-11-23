@@ -108,11 +108,5 @@ const styles = StyleSheet.create({
     color: "#868686",
     fontSize: 18,
     fontWeight: "bold"
-  },
-  loading: {
-    color: "#868686",
-    fontSize: 50,
-    textAlign: "center",
-    paddingBottom: 20
   }
 });

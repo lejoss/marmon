@@ -5,13 +5,7 @@ import {
   FormInput,
   Button
 } from "react-native-elements";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  Linking,
-} from "react-native";
+import { StyleSheet, Text, View, Platform, Linking } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import BackgroundImage from "../components/BackgroundImage";
@@ -26,7 +20,8 @@ class LoginScreen extends React.Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      error: null
     };
   }
 
@@ -64,13 +59,15 @@ class LoginScreen extends React.Component {
   _onSubmit = () => {
     const { email, password } = this.state;
     const { login } = this.props;
-    if (email !== "" || password !== "") {
-      login(this.state);
+    if (email === "" || password === "") {
+      this.setState({ error: "Please complete the form" });
+    } else {
+      this.setState({ error: null });
+      login({ email, password });
     }
   };
 
   render() {
-    const isIOS = Platform.OS === "ios" ? true : false; //{...isIOS ? { behavior: 'padding' } : {} }
     return (
       <BackgroundImage>
         <View style={{ flex: 2, justifyContent: "flex-end" }}>
@@ -103,31 +100,15 @@ class LoginScreen extends React.Component {
             ref={input => (this.passwordInput = input)}
           />
           <View>
-            <Text
-              style={{
-                fontSize: 12,
-                paddingLeft: 20,
-                color: "red",
-                backgroundColor: "transparent",
-                paddingTop: 20
-              }}
-            >
-              {this.props.error}
-            </Text>
+            {this.state.error && !this.props.loginError ? (
+              <Text style={styles.error}>{this.state.error}</Text>
+            ) : (
+              <Text style={styles.error}>{this.props.loginError}</Text>
+            )}
           </View>
         </View>
         <View style={{ flex: 1, justifyContent: "center" }}>
-          <Text
-            onPress={this._onTrobleLogin}
-            style={{
-              color: "#0C6A9B",
-              fontSize: 12,
-              fontWeight: "bold",
-              backgroundColor: "transparent",
-              paddingBottom: 10,
-              paddingLeft: 16
-            }}
-          >
+          <Text onPress={this._onTrobleLogin} style={styles.link}>
             Trouble Logging In?
           </Text>
           <Button
@@ -148,7 +129,7 @@ const mapStateToProps = state => {
     isAuthenticated: state.auth.isAuthenticated,
     isFetching: state.auth.isFetching,
     loginCreds: state.auth.login,
-    error: state.auth.error
+    loginError: state.auth.error
   };
 };
 
@@ -163,5 +144,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: 20
+  },
+  error: {
+    fontSize: 12,
+    paddingLeft: 20,
+    color: "red",
+    backgroundColor: "transparent",
+    paddingTop: 20
+  },
+  link: {
+    color: "#0C6A9B",
+    fontSize: 12,
+    fontWeight: "bold",
+    backgroundColor: "transparent",
+    paddingBottom: 10,
+    paddingLeft: 16
   }
 });
