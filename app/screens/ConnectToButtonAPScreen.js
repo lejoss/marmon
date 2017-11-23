@@ -7,7 +7,7 @@ import Layout from '../constants/Layout';
 export default class ConnectToButtonAPScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.onPressDelayed = _.debounce(this._navigate, 300);
+    this.onPressDelayed = _.debounce(this._navigate, 150);
   }
 
   static navigationOptions = {
@@ -28,7 +28,7 @@ export default class ConnectToButtonAPScreen extends React.Component {
   render() {    
     return (
       <View style={styles.container}>
-        <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center'  }}>
+        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center'  }}>
           <Text style={{ fontWeight: 'bold', fontSize: 18, textAlign: 'center', color: '#868686', paddingVertical: 20 }}>
             Press and hold your Button for up to 6 seconds, until the light flashes blue, then tap Next
           </Text>

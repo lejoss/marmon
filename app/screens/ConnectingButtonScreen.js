@@ -18,7 +18,7 @@ class ConnectingButtonScreen extends React.Component {
   };
 
   state = {
-    loading: true
+    loading: true,
   };
 
   componentWillMount() {
@@ -26,6 +26,10 @@ class ConnectingButtonScreen extends React.Component {
   }
 
   componentDidMount() {
+    const { connection } = this.state;
+    if (Platform.OS === 'ios') {
+      NetInfo.isConnected.addEventListener('change', this._requestProvisioning.bind(this))
+    }
     NetInfo.addEventListener(
       "connectionChange",
       this._requestProvisioning.bind(this)
@@ -48,12 +52,15 @@ class ConnectingButtonScreen extends React.Component {
   }
 
   componentWillUnmount() {
+    if (Platform.OS === 'ios') {
+      NetInfo.isConnected.removeEventListener("change", this._requestProvisioning.bind(this))
+    }
     NetInfo.removeEventListener(
       'connectionChange',
       this._requestProvisioning.bind(this)
     ); 
   }
-
+  
   async _requestProvisioning() {
     try {
       const { button: { currentButton }, networkCredentials, buttonConfigStatus } = this.props;

@@ -36,7 +36,7 @@ const data = [
 export default class IOSConnectButtonSteps extends Component {
   constructor(props) {
     super(props)
-    this.onPressDelayed = _.debounce(this._navigate, 300);
+    this.onPressDelayed = _.debounce(this._navigate, 150);
   }
 
   static navigationOptions = {
@@ -57,7 +57,7 @@ export default class IOSConnectButtonSteps extends Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={{ flex: 2 }}>
+        <View style={{ flex: 3 }}>
           <Text
             style={{
               fontSize: 18,

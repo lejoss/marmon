@@ -142,7 +142,7 @@ class ButtonListScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    buttons: selectFilteredButtons(state),
+    buttons: state.button.buttons,//selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
 };
