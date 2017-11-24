@@ -5,6 +5,7 @@ import {
   View,
   StatusBar,
   NetInfo,
+  Alert,
   ActivityIndicator
 } from "react-native";
 import { NetworkInfo } from "react-native-network-info";
@@ -13,27 +14,45 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 
 class ConnectingButtonScreen extends React.Component {
-  static navigationOptions = {
-    header: null
+  static navigationOptions = {    
+    headerTitle: 'Setup Button',
+    headerTintColor: 'white',
+    headerStyle: {
+      backgroundColor: '#0C6A9B',
+      height: Platform.OS === 'ios' ? 60 : 80,
+      paddingTop: 20,
+    },
   };
 
   state = {
-    loading: true,
+    loading: true    
   };
 
   componentWillMount() {
-    this.props.requestConfigureButton(); 
+    if (Platform.OS === 'android') {
+      this.props.requestConfigureButton();
+    }
   }
 
-  componentDidMount() {
-    const { connection } = this.state;
-    if (Platform.OS === 'ios') {
-      NetInfo.isConnected.addEventListener('change', this._requestProvisioning.bind(this))
-    }
-    NetInfo.addEventListener(
-      "connectionChange",
-      this._requestProvisioning.bind(this)
-    );
+  async componentDidMount() {
+    try {
+      if (Platform.OS === "ios") {
+        await this.props.requestConfigureButton();
+        await setTimeout(() => {
+          this.props.requestProvisioning(
+            this.props.button.currentButton._id
+          );
+        }, 9000);
+      }
+      if (Platform.OS === 'android') {
+        NetInfo.addEventListener(
+          "connectionChange",
+          this._requestProvisioning.bind(this)
+        );
+      }
+    } catch (error) {
+      Alert.alert('Error Provisioning Button')
+    }    
   }
 
   componentWillUpdate(nextProps) {
@@ -52,19 +71,19 @@ class ConnectingButtonScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    if (Platform.OS === 'ios') {
-      NetInfo.isConnected.removeEventListener("change", this._requestProvisioning.bind(this))
-    }
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this._requestProvisioning.bind(this)
-    ); 
+    if (Platform.OS === 'android') {
+      NetInfo.removeEventListener(
+        'connectionChange',
+        this._requestProvisioning.bind(this)
+      );
+    } 
   }
   
   async _requestProvisioning() {
     try {
       const { button: { currentButton }, networkCredentials, buttonConfigStatus } = this.props;
       const { type } = await NetInfo.getConnectionInfo();
+
       if ((type === 'wifi') && (buttonConfigStatus === 200)) {
         setTimeout(() => {
           this.props.requestProvisioning(currentButton._id);

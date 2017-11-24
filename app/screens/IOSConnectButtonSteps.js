@@ -12,11 +12,11 @@ import { Button } from "react-native-elements";
 const data = [
   {
     key: "1",
-    text: "Press the home button on your smartphone."
+    text: `Press the home button on your ${Platform.OS === 'ios' ? 'iPhone' : 'smartphone' }.`
   },
   {
     key: "2",
-    text: "Open Smartphone Settings select Wifi."
+    text: `Open ${Platform.OS === 'ios' ? 'iPhone' : 'smartphone' } Settings select Wifi.`
   },
   {
     key: "3",

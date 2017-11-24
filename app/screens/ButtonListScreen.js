@@ -1,4 +1,3 @@
-
 import React from "react";
 import { connect } from "react-redux";
 import { List, ListItem, Header } from "react-native-elements";
@@ -21,7 +20,7 @@ class ButtonListScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      headerTitle: "Select Button (Look on Back for DSN)",
+      headerTitle: "Select Button",
       headerLeft: null,
       headerTintColor: "white",
       headerRight: (
@@ -42,16 +41,20 @@ class ButtonListScreen extends React.Component {
     };
   };
 
-  componentWillMount() {
-    this.props.navigation.setParams({ logout: this._logout.bind(this) }); 
+  state = {
+    showButtonAlert: true
   }
 
-  async componentDidMount() {  
-    try {      
+  componentWillMount() {
+    this.props.navigation.setParams({ logout: this._logout.bind(this) });
+  }
+
+  async componentDidMount() {
+    try {
       await Promise.all([
         this.props.requestGatewayDataSources(),
         this.props.requestIntegrations()
-      ]);      
+      ]);
     } catch (error) {
       Alert.alert(
         "Could not load buttons, check wifi services or try restarting the App"
@@ -86,7 +89,7 @@ class ButtonListScreen extends React.Component {
 
   _logout() {
     this.props.destroySession();
-  };
+  }
 
   _resetNavigation() {
     const resetAction = NavigationActions.reset({
@@ -102,7 +105,7 @@ class ButtonListScreen extends React.Component {
         style={{
           height: 1,
           width: "100%",
-          backgroundColor: "#CED0CE",
+          backgroundColor: "#CED0CE"
         }}
       />
     );
@@ -126,6 +129,30 @@ class ButtonListScreen extends React.Component {
               borderBottomWidth: 0
             }}
           >
+            {
+              this.state.showButtonAlert && 
+              (
+                <View
+                style={{
+                  height: 65,
+                  backgroundColor: "#eee",
+                  alignItems: "center",                  
+                  flexDirection: 'row'
+                }}
+              >
+                <Text style={{ flex: 1, textAlign: 'center', fontSize: 14, color: "#868686", opacity: 0.8 }}>
+                  Look on Back for DSN
+                </Text>
+                <Icon
+                  name={Platform.OS === "ios" ? "ios-close" : "md-close"}
+                  size={28}
+                  color="#868686"
+                  style={{ paddingRight: 15, fontWeight: 'bold' }}
+                  onPress={() => this.setState({ showButtonAlert:false })}
+                />
+              </View>
+              )
+            }
             <FlatList
               data={this.props.buttons}
               renderItem={this.renderItem}
@@ -142,7 +169,7 @@ class ButtonListScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    buttons: state.button.buttons,//selectFilteredButtons(state),
+    buttons: state.button.buttons, //selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
 };

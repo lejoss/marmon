@@ -4,24 +4,21 @@ import { Button } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 
 export default class ThankYouScreen extends React.Component {
-  static navigationOptions = {
-    header: null
+  static navigationOptions = {    
+    headerTitle: 'Setup Completed',
+    headerTintColor: 'white',
+    headerStyle: {
+      backgroundColor: '#0C6A9B',
+      height: Platform.OS === 'ios' ? 60 : 80,
+      paddingTop: 20,
+    },
   };
-
-  _resetNavigation() {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      key: null,
-      actions: [NavigationActions.navigate({ routeName: 'list' })],
-    });
-    this.props.navigation.dispatch(resetAction);
-  }
 
   render() {
     return (
       <View style={styles.container}>
         <StatusBar translucent backgroundColor="#0D4969" />
-        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ fontSize: 14, textAlign: 'center' }}>
             <Text style={styles.bold}>Your Dash Button{"\n"} </Text>
             <Text style={styles.bold}>has been succesfully connected.{"\n\n"} </Text>
