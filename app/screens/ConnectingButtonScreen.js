@@ -57,6 +57,7 @@ class ConnectingButtonScreen extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
+    console.log(nextProps)    
     const { buttonConfigStatus, buttonProvisioningStatus } = nextProps;
     if (buttonConfigStatus === 0) {
       this.props.navigation.navigate("ConnectionFailure");

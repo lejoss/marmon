@@ -75,81 +75,84 @@ class SaveCredentials extends React.Component {
     this.setState({ error: "" });
     NetworkInfo.getSSID(ssid => {
       if (ssid) {
-        if (ssid.startsWith("Button ConfigureMe")) {          
+        if (ssid.startsWith("UNE_C3DD")) {
           this.props.saveNetworkCredentials({ network, password });
-          this.props.navigation.navigate('connectingButton')
+          this.props.navigation.navigate("connectingButton");
         } else {
           Alert.alert("Please connect to ButtonConfigure me.");
           return;
         }
       }
     });
-  };
+  }
 
   render() {
     const { network, password } = this.state;
     return (
-      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-        <View
-          style={{
-            flex: 3
-          }}
-        >
-          <Text
+      <View style={styles.container}>
+        <KeyboardAwareScrollView contentContainerStyle={{ height: Layout.window.height -  (Platform.OS === "ios" ? 60 : 80) }}>
+          <View
             style={{
-              color: "#868686",
-              fontSize: 18,
-              textAlign: "center",
-              paddingVertical: 20,
-              fontWeight: "bold"
+              flex: 3
             }}
           >
-            Connect your Button to your Wi-Fi Network.
-          </Text>
-          <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
-            Name of your Wifi Network
-          </FormLabel>
-          <FormInput
-            underlineColorAndroid="#0C6A9B"
-            value={network}
-            onChangeText={network => this.setState({ network })}
-            autoCapitalize="none"
-            returnKeyType="next"
-            autoCorrect={false}
-            inputStyle={{ paddingLeft: 5 }}
-            onSubmitEditing={() => this.passwordInput.focus()}
-          />
-          <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
-            Password
-          </FormLabel>
-          <FormInput
-            underlineColorAndroid="#0C6A9B"
-            value={password}
-            onChangeText={password => this.setState({ password })}
-            autoCapitalize="none"
-            returnKeyType="go"
-            autoCorrect={false}
-            inputStyle={{ paddingLeft: 5 }}
-            ref={input => (this.passwordInput = input)}
-          />
-          <Text style={styles.error}>{this.state.error}</Text>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center"
-          }}
-        >
-          <Button
-            buttonStyle={{
-              backgroundColor: "#0C6A9B"
+            <Text
+              style={{
+                color: "#868686",
+                fontSize: 18,
+                textAlign: "center",
+                paddingVertical: 20,
+                fontWeight: "bold"
+              }}
+            >
+              Connect your Button to your Wi-Fi Network.
+            </Text>
+            <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
+              Name of your Wifi Network
+            </FormLabel>
+            <FormInput
+              underlineColorAndroid="#0C6A9B"
+              value={network}
+              onChangeText={network => this.setState({ network })}
+              autoCapitalize="none"
+              returnKeyType="next"
+              autoCorrect={false}
+              inputStyle={{ paddingLeft: 5 }}
+              onSubmitEditing={() => this.passwordInput.focus()}
+            />
+            <FormLabel inputStyle={{ backgroundColor: "transparent" }}>
+              Password
+            </FormLabel>
+            <FormInput
+              underlineColorAndroid="#0C6A9B"
+              value={password}
+              onChangeText={password => this.setState({ password })}
+              autoCapitalize="none"
+              returnKeyType="go"
+              autoCorrect={false}
+              inputStyle={{ paddingLeft: 5 }}
+              ref={input => (this.passwordInput = input)}
+              onSubmitEditing={this._connectToButtonAP.bind(this)}
+            />
+            <Text style={styles.error}>{this.state.error}</Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center"
             }}
-            raised
-            title="NEXT"
-            onPress={this.onPressDelayed.bind(this)}
-          />
-        </View>
-      </KeyboardAwareScrollView>
+          >
+            <Button
+              buttonStyle={{
+                backgroundColor: "#0C6A9B"
+              }}
+              raised
+              title="NEXT"
+              onPress={this.onPressDelayed.bind(this)}
+            />
+          </View>
+        </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
@@ -167,7 +170,6 @@ export default connect(mapStateToProps, actions)(SaveCredentials);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: "#fff",
     paddingHorizontal: 8
   },

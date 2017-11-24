@@ -98,6 +98,7 @@ class LoginScreen extends React.Component {
             inputStyle={{ paddingLeft: 5, backgroundColor: "transparent" }}
             secureTextEntry
             ref={input => (this.passwordInput = input)}
+            onSubmitEditing={this._onSubmit}
           />
           <View>
             {this.state.error && !this.props.loginError ? (

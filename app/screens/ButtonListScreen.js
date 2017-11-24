@@ -14,9 +14,19 @@ import {
   ActivityIndicator,
   Alert
 } from "react-native";
+import _ from 'lodash';
 import * as actions from "../actions";
 
 class ButtonListScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onPressDelayed = _.debounce(this._onSelectButton, 150);
+
+    this.state = {
+      showButtonAlert: true
+    }
+  }
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
@@ -39,11 +49,7 @@ class ButtonListScreen extends React.Component {
         paddingTop: 20
       }
     };
-  };
-
-  state = {
-    showButtonAlert: true
-  }
+  };  
 
   componentWillMount() {
     this.props.navigation.setParams({ logout: this._logout.bind(this) });
@@ -76,7 +82,7 @@ class ButtonListScreen extends React.Component {
   }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => this._onSelectButton(item)}>
+    <TouchableOpacity onPress={this.onPressDelayed.bind(this)}>
       <ListItem
         title={item.name && item.name.toUpperCase()}
         titleStyle={{ fontSize: 18, color: "#5C5B5C" }}
@@ -148,7 +154,7 @@ class ButtonListScreen extends React.Component {
                   size={28}
                   color="#868686"
                   style={{ paddingRight: 16, fontWeight: 'bold' }}
-                  onPress={() => this.setState({ showButtonAlert:false })}
+                  onPress={() => this.setState({ showButtonAlert: false })}
                 />
               </View>
               )
