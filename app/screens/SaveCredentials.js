@@ -37,11 +37,12 @@ class SaveCredentials extends React.Component {
   constructor(props) {
     super(props);
 
+    this.onPressDelayed = _.debounce(this._connectToButtonAP, 150);
+
     this.state = {
       network: "",
       password: "",
       buttonSSID: "",
-      isDisabled: false,
       error: ""
     };
   }
@@ -61,29 +62,23 @@ class SaveCredentials extends React.Component {
     this.setState({
       network: "",
       password: "",
-      isDisabled: false,
       error: ""
     });
   }
 
-  _connectToButtonAP = () => {
+  _connectToButtonAP() {
     const { network, password } = this.state;
     if (network === "" || password === "") {
       this.setState({ error: "Please complete the form" });
       return;
     }
-
+    this.setState({ error: "" });
     NetworkInfo.getSSID(ssid => {
       if (ssid) {
-        if (ssid.startsWith("Button ConfigureMe")) {
-          this.setState({ isDisabled: true, error: "" });
-          this.props.saveNetworkCredentials({
-            network,
-            password
-          });
-          this.props.navigation.navigate("connectingButton");
+        if (ssid.startsWith("Button ConfigureMe")) {          
+          this.props.saveNetworkCredentials({ network, password });
+          this.props.navigation.navigate('connectingButton')
         } else {
-          this.setState({ isDisabled: false });
           Alert.alert("Please connect to ButtonConfigure me.");
           return;
         }
@@ -92,7 +87,7 @@ class SaveCredentials extends React.Component {
   };
 
   render() {
-    const { network, password, isDisabled } = this.state;
+    const { network, password } = this.state;
     return (
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <View
@@ -151,8 +146,7 @@ class SaveCredentials extends React.Component {
             }}
             raised
             title="NEXT"
-            disabled={isDisabled}
-            onPress={this._connectToButtonAP}
+            onPress={this.onPressDelayed.bind(this)}
           />
         </View>
       </KeyboardAwareScrollView>

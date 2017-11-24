@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 import { Button } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 
@@ -20,7 +20,7 @@ export default class ThankYouScreen extends React.Component {
         <StatusBar translucent backgroundColor="#0D4969" />
         <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ fontSize: 14, textAlign: 'center' }}>
-            <Text style={styles.bold}>Your Dash Button{"\n"} </Text>
+            <Text style={styles.bold}>Your Button{"\n"} </Text>
             <Text style={styles.bold}>has been succesfully connected.{"\n\n"} </Text>
             <Text style={styles.bold}>Thank You!</Text>
           </Text>

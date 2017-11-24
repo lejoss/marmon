@@ -147,7 +147,7 @@ class ButtonListScreen extends React.Component {
                   name={Platform.OS === "ios" ? "ios-close" : "md-close"}
                   size={28}
                   color="#868686"
-                  style={{ paddingRight: 15, fontWeight: 'bold' }}
+                  style={{ paddingRight: 16, fontWeight: 'bold' }}
                   onPress={() => this.setState({ showButtonAlert:false })}
                 />
               </View>
@@ -169,7 +169,7 @@ class ButtonListScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    buttons: state.button.buttons, //selectFilteredButtons(state),
+    buttons: selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
 };

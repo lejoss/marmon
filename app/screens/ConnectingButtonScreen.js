@@ -6,6 +6,7 @@ import {
   StatusBar,
   NetInfo,
   Alert,
+  Platform,
   ActivityIndicator
 } from "react-native";
 import { NetworkInfo } from "react-native-network-info";
