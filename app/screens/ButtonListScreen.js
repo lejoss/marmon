@@ -82,9 +82,9 @@ class ButtonListScreen extends React.Component {
   }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity onPress={this.onPressDelayed.bind(this)}>
+    <TouchableOpacity onPress={() => this.onPressDelayed()}>
       <ListItem
-        title={item.name && item.name.toUpperCase()}
+        title={item.name && item.name.toUpperCase(item)}
         titleStyle={{ fontSize: 18, color: "#5C5B5C" }}
         subtitle={`DSN: ${item.unique_id}`}
         subtitleStyle={{ fontSize: 14, color: "#868686", opacity: 0.7 }}

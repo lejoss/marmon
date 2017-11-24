@@ -75,7 +75,7 @@ class SaveCredentials extends React.Component {
     this.setState({ error: "" });
     NetworkInfo.getSSID(ssid => {
       if (ssid) {
-        if (ssid.startsWith("UNE_C3DD")) {
+        if (ssid.startsWith("Button ConfigureMe")) {
           this.props.saveNetworkCredentials({ network, password });
           this.props.navigation.navigate("connectingButton");
         } else {
