@@ -99,7 +99,7 @@ class SaveCredentials extends React.Component {
     const { network, password } = this.state;
     return (
       <View style={styles.container}>
-        <KeyboardAwareScrollView contentContainerStyle={{ height: Layout.window.height -  (Platform.OS === "ios" ? 60 : 80) }}>
+        <KeyboardAwareScrollView contentContainerStyle={{ height: Layout.window.height -  (Platform.OS === "ios" ? 80 : 100) }}>
           <View
             style={{
               flex: 3
