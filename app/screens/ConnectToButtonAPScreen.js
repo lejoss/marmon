@@ -5,21 +5,21 @@ import _ from 'lodash';
 import Layout from '../constants/Layout';
 
 export default class ConnectToButtonAPScreen extends React.Component {
+  static navigationOptions = {
+    headerTitle: `Button Setup`,
+    headerBackTitle: null,
+    headerTintColor: "white",
+    headerStyle: {
+      backgroundColor: "#0C6A9B",
+      height: Platform.OS === "ios" ? 60 : 80,
+      paddingTop: 20
+    }
+  };
+
   constructor(props) {
     super(props)
     this.onPressDelayed = _.debounce(this._navigate, 150);
-  }
-
-  static navigationOptions = {
-    headerTitle: 'Button Setup',
-    headerTintColor: 'white',
-    headerBackTitle: null,
-    headerStyle: {
-      backgroundColor: '#0C6A9B',
-      height: Platform.OS === 'ios' ? 60 : 80,
-      paddingTop: 20,
-    },
-  };
+  } 
 
   _navigate() {    
     this.props.navigation.navigate('steps')

@@ -40,7 +40,6 @@ export default class IOSConnectButtonSteps extends Component {
   }
 
   static navigationOptions = {
-    tabBarLabel: "Setup",
     headerTitle: `Button Setup`,
     headerBackTitle: null,
     headerTintColor: "white",

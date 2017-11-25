@@ -31,6 +31,7 @@ class ButtonListScreen extends React.Component {
     const { params = {} } = navigation.state;
     return {
       headerTitle: "Select Button",
+      headerBackTitle: null,
       headerLeft: null,
       headerTintColor: "white",
       headerRight: (
