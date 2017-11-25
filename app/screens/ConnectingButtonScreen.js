@@ -59,8 +59,7 @@ class ConnectingButtonScreen extends React.Component {
     }    
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)    
+  componentWillReceiveProps(nextProps) {   
     const { buttonConfigStatus, buttonProvisioningStatus } = nextProps;
 
     if (buttonConfigStatus) {
