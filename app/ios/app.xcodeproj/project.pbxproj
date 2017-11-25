@@ -741,8 +741,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = KQPE5FEGYH;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = L5T795PC63;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1285,11 +1285,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-4";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = KQPE5FEGYH;
+				DEVELOPMENT_TEAM = L5T795PC63;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-network-info/ios",
@@ -1304,8 +1304,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marmon.keystone;
 				PRODUCT_NAME = app;
-				PROVISIONING_PROFILE = "34761c79-51c4-4e38-a4e7-be388e776bf8";
-				PROVISIONING_PROFILE_SPECIFIER = "marmon-profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1316,10 +1316,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-4";
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KQPE5FEGYH;
+				DEVELOPMENT_TEAM = L5T795PC63;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-network-info/ios",
@@ -1334,8 +1334,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marmon.keystone;
 				PRODUCT_NAME = app;
-				PROVISIONING_PROFILE = "34761c79-51c4-4e38-a4e7-be388e776bf8";
-				PROVISIONING_PROFILE_SPECIFIER = "marmon-profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

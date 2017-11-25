@@ -14,10 +14,17 @@ export default class ThankYouScreen extends React.Component {
     },
   };
 
+  _goToButtonListScreen() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "list" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar translucent backgroundColor="#0D4969" />
         <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ fontSize: 14, textAlign: 'center' }}>
             <Text style={styles.bold}>Your Button{"\n"} </Text>
@@ -27,7 +34,7 @@ export default class ThankYouScreen extends React.Component {
         </View>
         <View style={{ flex: 1, justifyContent: 'center'  }}>
           <Button
-						onPress={() => this.props.navigation.navigate('list')}
+						onPress={() => this._goToButtonListScreen()}
             title="BACK TO BUTTON LIST"
             buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised

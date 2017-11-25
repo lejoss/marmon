@@ -37,7 +37,7 @@ class ButtonListScreen extends React.Component {
         <TouchableOpacity onPress={params.logout && params.logout}>
           <Icon
             name={Platform.OS === "ios" ? "ios-log-out" : "md-log-out"}
-            size={28}
+            size={24}
             color="#fff"
             style={{ paddingRight: 10 }}
           />
@@ -82,7 +82,7 @@ class ButtonListScreen extends React.Component {
   }
 
   renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => this.onPressDelayed()}>
+    <TouchableOpacity onPress={() => this.onPressDelayed(item)}>
       <ListItem
         title={item.name && item.name.toUpperCase(item)}
         titleStyle={{ fontSize: 18, color: "#5C5B5C" }}
@@ -146,12 +146,12 @@ class ButtonListScreen extends React.Component {
                   flexDirection: 'row'
                 }}
               >
-                <Text style={{ flex: 1, textAlign: 'center', fontSize: 14, color: "#868686", opacity: 0.8 }}>
+                <Text style={{ flex: 1, textAlign: 'center', fontSize: 18, color: "#868686", opacity: 0.8 }}>
                   Look on Back for DSN
                 </Text>
                 <Icon
                   name={Platform.OS === "ios" ? "ios-close" : "md-close"}
-                  size={28}
+                  size={24}
                   color="#868686"
                   style={{ paddingRight: 16, fontWeight: 'bold' }}
                   onPress={() => this.setState({ showButtonAlert: false })}
@@ -175,7 +175,7 @@ class ButtonListScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    buttons: selectFilteredButtons(state),
+    buttons: state.button.buttons,//selectFilteredButtons(state),
     isFetching: state.button.isFetching
   };
 };

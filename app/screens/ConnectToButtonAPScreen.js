@@ -11,9 +11,9 @@ export default class ConnectToButtonAPScreen extends React.Component {
   }
 
   static navigationOptions = {
-    tabBarLabel: 'Setup',
     headerTitle: 'Button Setup',
     headerTintColor: 'white',
+    headerBackTitle: null,
     headerStyle: {
       backgroundColor: '#0C6A9B',
       height: Platform.OS === 'ios' ? 60 : 80,

@@ -85,10 +85,13 @@ export const requestConfigureButton = () => async (dispatch, getState) => {
 		const dsn = button.currentButton.unique_id;
 		const body = createFormRequest({ button, setup }, dsn);
 
-		const response = await axios.post(url, body, config);
+    const response = await axios.post(url, body, config);
     dispatch(requestConfigureButtonSuccess(response.status));
 	} catch (err) {
-		dispatch(requestConfigureButtonFailure(err.request.status));
+    if (err && err.request && err.request.status) {
+      dispatch(requestConfigureButtonFailure(err.request.status));
+    }
+    dispatch(requestConfigureButtonFailure(err));
 	}
 }
 
@@ -100,7 +103,10 @@ export const requestProvisioning = (buttonId) => async (dispatch, getState) => {
 		const response = await axios.put(url, {}, { headers: { Authorization: `Basic ${token}` } });
 		dispatch(requestProvisioningSuccess(response.status));
 	} catch (err) {
-		dispatch(requestProvisioningFailure(err.request.status));
+    if (err && err.request && err.request.status) {
+      dispatch(requestConfigureButtonFailure(err.request.status));
+    }
+		dispatch(requestProvisioningFailure(err));
 	}
 }
 

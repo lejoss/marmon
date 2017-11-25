@@ -18,14 +18,15 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NetworkInfo } from "react-native-network-info";
 import { connect } from "react-redux";
+import { NavigationActions } from 'react-navigation';
 import _ from "lodash";
 import * as actions from "../actions";
 import Layout from "../constants/Layout";
 
 class SaveCredentials extends React.Component {
   static navigationOptions = {
-    tabBarLabel: "Setup",
     headerTitle: `Button Setup`,
+    headerBackTitle: null,
     headerTintColor: "white",
     headerStyle: {
       backgroundColor: "#0C6A9B",
@@ -66,6 +67,14 @@ class SaveCredentials extends React.Component {
     });
   }
 
+  _goToSetupScreen() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "connectingButton" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
   _connectToButtonAP() {
     const { network, password } = this.state;
     if (network === "" || password === "") {
@@ -77,7 +86,7 @@ class SaveCredentials extends React.Component {
       if (ssid) {
         if (ssid.startsWith("Button ConfigureMe")) {
           this.props.saveNetworkCredentials({ network, password });
-          this.props.navigation.navigate("connectingButton");
+          this._goToSetupScreen()
         } else {
           Alert.alert("Please connect to ButtonConfigure me.");
           return;

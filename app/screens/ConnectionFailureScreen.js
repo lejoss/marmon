@@ -23,6 +23,14 @@ export default class ConnectionFailureScreen extends React.Component {
     }
   };
 
+  _goToButtonListScreen() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "list" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -36,7 +44,7 @@ export default class ConnectionFailureScreen extends React.Component {
         </View>
         <View style={{ flex: 1 }}>
           <Button
-            onPress={() => this.props.navigation.navigate("list")}
+            onPress={() => this._goToButtonListScreen()}
             title="RETRY"
             buttonStyle={{ backgroundColor: "#0C6A9B" }}
             raised

@@ -10,6 +10,7 @@ import {
   ActivityIndicator
 } from "react-native";
 import { NetworkInfo } from "react-native-network-info";
+import { NavigationActions } from 'react-navigation';
 import { connect } from "react-redux";
 
 import * as actions from "../actions";
@@ -18,6 +19,7 @@ class ConnectingButtonScreen extends React.Component {
   static navigationOptions = {    
     headerTitle: 'Setup Button',
     headerTintColor: 'white',
+    headerLeft: null,
     headerStyle: {
       backgroundColor: '#0C6A9B',
       height: Platform.OS === 'ios' ? 60 : 80,
@@ -26,12 +28,18 @@ class ConnectingButtonScreen extends React.Component {
   };
 
   state = {
-    loading: true    
+    loading: true ,
+    configSuccess: false   
   };
 
   componentWillMount() {
     if (Platform.OS === 'android') {
       this.props.requestConfigureButton();
+
+      NetInfo.addEventListener(
+        "connectionChange",
+        this._requestProvisioning.bind(this)
+      );
     }
   }
 
@@ -44,41 +52,57 @@ class ConnectingButtonScreen extends React.Component {
             this.props.button.currentButton._id
           );
         }, 9000);
-      }
-      if (Platform.OS === 'android') {
-        NetInfo.addEventListener(
-          "connectionChange",
-          this._requestProvisioning.bind(this)
-        );
-      }
+      } else { return null }
     } catch (error) {
-      Alert.alert('Error Provisioning Button')
+        Alert.alert('Error: Failed Configuring Button (ERR_02)')
+        this._goToFailureScreen()
     }    
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
     console.log(nextProps)    
     const { buttonConfigStatus, buttonProvisioningStatus } = nextProps;
-    if (buttonConfigStatus === 0) {
-      this.props.navigation.navigate("ConnectionFailure");
+
+    if (buttonConfigStatus) {
+      if (buttonConfigStatus !== 200) {
+        this._goToFailureScreen()
+      }
     }
 
     if (buttonConfigStatus && buttonProvisioningStatus) {
-      if (buttonConfigStatus === 200 && buttonProvisioningStatus === 200) {
-        this.props.navigation.navigate("thankyou"); 
-      } else if (buttonConfigStatus === 200 && buttonProvisioningStatus === 0) {
-        this.props.navigation.navigate("ConnectionFailure");
+      if (buttonConfigStatus === 200 && buttonProvisioningStatus === 200 && this.state.configSuccess === false) {
+        this.setState({ configSuccess: true })
+        this._goToThankYouPage()
+      } else if ( (buttonConfigStatus === 200) && (buttonProvisioningStatus !== 200) ) {
+        this._goToFailureScreen()
       }
     }
   }
 
   componentWillUnmount() {
+    this.setState({ loading: false })
     if (Platform.OS === 'android') {
       NetInfo.removeEventListener(
         'connectionChange',
         this._requestProvisioning.bind(this)
       );
     } 
+  }
+
+  _goToThankYouPage() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "thankyou" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
+  _goToFailureScreen() {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "ConnectionFailure" })]
+    });
+    this.props.navigation.dispatch(resetAction);
   }
   
   async _requestProvisioning() {
